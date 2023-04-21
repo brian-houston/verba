@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "verbae"
+version = "0.0.1"
+authors = [
+    {name = "Brian Houston"},
+]
+description = "Tool to assist in learning the Latin language"
+readme = "README.md"
+requires-python = ">=3.7"
+license = {file = "LICENSE"}
+dependencies = [
+    "readchar"
+]
+
+[project.scripts]
+verbae = "cli:main"
