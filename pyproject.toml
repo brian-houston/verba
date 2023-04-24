@@ -20,4 +20,4 @@ dependencies = [
 verbae = "verbae.cli:main"
 
 [tool.setuptools]
-packages = ["verbae"]
+packages = ["verbae", "verbae.word"]
