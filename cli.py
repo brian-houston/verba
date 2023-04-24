@@ -1,2 +1,8 @@
+import input
+
 def main():
-    print("hello")
+    word = input.read_latin_input()
+    print(word)
+
+if __name__ == "__main__":
+    main()
