@@ -17,7 +17,7 @@ dependencies = [
 ]
 
 [project.scripts]
-verbae = "cli:main"
+verbae = "verbae.cli:main"
 
 [tool.setuptools]
-py-modules = ["cli", "input"]
+packages = ["verbae"]
