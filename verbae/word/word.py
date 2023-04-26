@@ -1,4 +1,6 @@
 class Word:
-    def __init__(self, word_type):
-        self.word_type = word_type
+    def __init__(self, part_of_speech, data):
+        self.part_of_speech = part_of_speech
+        self.meaning = data['meaning']
+        self.chapter = int(data['chapter'])
 
