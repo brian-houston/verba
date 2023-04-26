@@ -30,6 +30,10 @@ def read_latin_input():
             if char_list:
                 char_list.pop()
         elif c == '-':
+            # do nothing if no characters entered
+            if not char_list:
+                continue
+
             # toggle macron 
             if char_list[-1] in short_vowels:
                 vowel = long_vowels[short_vowels.index(char_list[-1])]
