@@ -19,5 +19,3 @@ dependencies = [
 [project.scripts]
 verbae = "verbae.cli:main"
 
-[tool.setuptools]
-packages = ["verbae", "verbae.word"]
