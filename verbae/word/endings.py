@@ -15,3 +15,5 @@ def load_endings():
         for line in tsv_file:
             key = f"{line['declension']}-{line['gender']}-{line['case']}-{line['number']}"
             endings['noun'][key] = line['ending']
+
+load_endings()

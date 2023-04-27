@@ -15,8 +15,8 @@ def get_words(library_name):
     return words
 
 def main():
-    get_words('LL')
     endings.load_endings()
+    get_words('LL')
     print(endings.endings)
     word = input.read_latin_input()
     print(word)
