@@ -1,7 +1,7 @@
 import itertools
-from verbae.word.word import Word 
-import verbae.word.definitions as definitions
-import verbae.word.endings as endings
+from verba.word.word import Word 
+import verba.word.definitions as definitions
+import verba.word.endings as endings
 
 class Noun(Word):
     def __init__(self, data):

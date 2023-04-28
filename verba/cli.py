@@ -1,13 +1,13 @@
 import csv
 from importlib.resources import files
-import verbae.word.endings as endings
-import verbae.input as input
-from verbae.word.noun import Noun
+import verba.word.endings as endings
+import verba.input as input
+from verba.word.noun import Noun
 
 def get_words(library_name):
     words = []
 
-    with files('verbae.data').joinpath(library_name).joinpath('nouns.tsv').open(encoding='utf-16') as file:
+    with files('verba.data').joinpath(library_name).joinpath('nouns.tsv').open(encoding='utf-16') as file:
         tsv_file = csv.DictReader(file, delimiter='\t')
         for line in tsv_file:
             words.append(Noun(line))

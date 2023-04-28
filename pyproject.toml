@@ -3,7 +3,7 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "verbae"
+name = "verba"
 version = "0.0.1"
 authors = [
     {name = "Brian Houston"},
@@ -17,5 +17,7 @@ dependencies = [
 ]
 
 [project.scripts]
-verbae = "verbae.cli:main"
+verba = "verba.cli:main"
 
+[tool.setuptools.package-data]
+"*" = ["*.tsv"]

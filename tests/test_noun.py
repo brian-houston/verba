@@ -1,6 +1,6 @@
 import unittest
-from verbae.word.noun import Noun
-import verbae.word.endings as endings
+from verba.word.noun import Noun
+import verba.word.endings as endings
 
 class TestNoun(unittest.TestCase):
     def make_noun(ch='1', dec='1', ns='', stem='litter', gender='f', meaning='This is a Latin word', special=''):
