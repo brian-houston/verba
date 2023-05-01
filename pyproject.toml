@@ -20,4 +20,4 @@ dependencies = [
 verba = "verba.cli:main"
 
 [tool.setuptools.package-data]
-"*" = ["*.tsv"]
+"verba.data" = ["**"]

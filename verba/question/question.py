@@ -1,8 +1,8 @@
 class Question:
-    def __init__(self, english_question, latin_question, answer):
+    def __init__(self, english_question, latin_question, answers):
         self.english_question = english_question
         self.latin_question = latin_question
-        self.answer = answer
+        self.answers = answers
 
     def print_english():
         print(english_question)
