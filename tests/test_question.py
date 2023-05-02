@@ -4,7 +4,7 @@ import tests.word_utils as word_utils
 
 class TestQuestion(unittest.TestCase):
     def test_question(self):
-        gen = IdentifyGenerator('noun', '', '')
+        gen = IdentifyGenerator('noun', '', ['gender', 'case', 'number'])
         word = word_utils.make_noun()
         questions = gen.generate(1, [word])
         questions[0].print_english()
