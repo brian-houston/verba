@@ -22,25 +22,23 @@ class Noun(Word):
         self.special = data['special'].split(',')
         self.inflections = {}
 
-        key_prefix = f'{self.declension}-{self.gender}'
+        key_prefix = (self.declension, self.gender)
         cases = list(definitions.cases)
         numbers = list(definitions.numbers)
 
         if 'plural' in self.special:
             numbers = ['p']
-
-        if 'singular' in self.special:
+        elif 'singular' in self.special:
             numbers = ['s']
 
         products = itertools.product(cases, numbers)
-        for p in products:
-            key_suffix = '-'.join(list(p)) 
-            key = f'{key_prefix}-{key_suffix}'
+        for key_suffix in products:
+            key = key_prefix + key_suffix
             ending = endings.endings["noun"][key]
             self.inflections[key_suffix] = self.stem + ending
 
         if 'nominative_singular' in data and data['nominative_singular']:
-            self.inflections['nom-s'] = data['nominative_singular']
+            self.inflections[('nom', 's')] = data['nominative_singular']
 
     def __repr__(self):
         return f'Noun: {self.stem}'
