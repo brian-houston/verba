@@ -45,12 +45,14 @@ class Noun(Word):
     def __repr__(self):
         return f'Noun: {self.stem}'
 
-    def has_inflection(self, case, number):
-        key = f'{case}-{number}'
+    def has_inflection(self, key):
         return key in self.inflections
 
-    def get_inflection(self, case, number):
-        key = f'{case}-{number}'
-        return self.inflections[key]
-
-
+    def get_inflection(self, key):
+        word = self.inflections[key]
+        keys = [k for (k, v) in self.inflections.items() if v == word]
+        return {
+                'word': word,
+                'keys': keys,
+                'gender': self.gender,
+                }

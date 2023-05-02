@@ -4,11 +4,11 @@ class Question:
         self.latin_question = latin_question
         self.answers = answers
 
-    def print_english():
-        print(english_question)
+    def print_english(self):
+        print(self.english_question)
 
-    def print_latin():
-        print(latin_question)
+    def print_latin(self):
+        print(self.latin_question)
 
-    def check_input(input):
+    def check_input(self, input):
         return True

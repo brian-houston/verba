@@ -2,7 +2,7 @@ from verba.question.question_generator import QuestionGenerator
 from verba.question.question import Question
 
 class IdentifyGenerator(QuestionGenerator):
-    eng_format = 'What {verb} the {attributes} of the word "{word}"'
+    eng_format = 'What {verb} the {attributes} of the word "{word}"?'
     lat_format = ''
     def __init__(self, part_of_speech, filters, attributes):
         self.attributes = attributes
@@ -16,9 +16,12 @@ class IdentifyGenerator(QuestionGenerator):
         # filter words
 
         for i in range(count):
-            word = words[i].get_inflection('nom', 's')
+            word = words[i].get_inflection('nom-s')['word']
             eng_question = self.eng_format.format(word = word)
-            lat_question = lat_format
-            answers = [[word.gender]]
+            lat_question = self.lat_format
+            answers = [[words[i].gender]]
+            questions.append(Question(eng_question, lat_question, answers))
+        
+        return questions
 
 
