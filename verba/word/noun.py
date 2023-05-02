@@ -55,4 +55,5 @@ class Noun(Word):
                 'word': word,
                 'keys': keys,
                 'gender': self.gender,
+                'meaning': self.meaning
                 }
