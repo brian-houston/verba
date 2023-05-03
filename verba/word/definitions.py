@@ -13,14 +13,14 @@ inflections_lookup = {
             }
         }
 
-attributes_order = {
+attribute_order = {
         'noun': ['gender', 'case', 'number'],
         'adjective': ['gender', 'case', 'number'],
-        'verb': ['mood', 'tense', 'voice', 'person', 'number']
+        'verb': ['mood', 'tense', 'voice', 'person', 'number'],
         'participle': ['tense', 'voice', 'gender', 'case', 'number'],
         }
 
-value_to_attributes = {
+value_to_attribute = {
             'f': 'gender',
             'm': 'gender',
             'n': 'gender',

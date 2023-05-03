@@ -5,7 +5,23 @@ import verba.word.definitions as definitions
 class IdentifyGenerator(QuestionGenerator):
     eng_format = 'What {verb} the {attributes} of the word "{word}"?'
     lat_format = ''
+
     def __init__(self, part_of_speech, filters, attributes):
+        if part_of_speech in definitions.parts_of_speech:
+            self.part_of_speech = part_of_speech
+        else:
+            raise ValueError(f'Provided invalid part of speech "{part_of_speech}"')
+
+        # filter out attributes which do not apply to this part of speech
+        attributes = [attr for attr in attributes 
+                      if attr in definitions.attribute_order[self.part_of_speech]]
+
+        if not attributes:
+            raise ValueError(f'No valid attributes provided for part of speech "{part_of_speech}"')
+
+        # sort attributes in the defined order
+        attributes.sort(key = lambda attr: definitions.attribute_order[self.part_of_speech].index(attr))
+
         self.attributes = attributes
 
         n_attr = len(attributes) 
@@ -17,7 +33,7 @@ class IdentifyGenerator(QuestionGenerator):
             eng_attributes = f'{eng_attributes}{comma} and {attributes[-1]}'
 
         self.eng_format = self.eng_format.format(verb=eng_verb, attributes=eng_attributes, word='{word}')
-        super().__init__(part_of_speech, filters)
+        super().__init__(filters)
 
     def generate(self, count, words):
         questions = []
