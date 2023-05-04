@@ -2,11 +2,18 @@ from verba.question.question_generator import QuestionGenerator
 from verba.question.question import Question
 import verba.word.definitions as definitions
 
+def order_attributes(attr, part_of_speech):
+    return definitions.attribute_order[part_of_speech].index(attr)
+
+def order_values(val, part_of_speech):
+    attr = definitions.value_to_attribute[val]
+    return order_attributes(attr, part_of_speech)
+
 class IdentifyGenerator(QuestionGenerator):
     eng_format = 'What {verb} the {attributes} of the word "{word}"?'
     lat_format = ''
 
-    def __init__(self, part_of_speech, filters, attributes):
+    def __init__(self, part_of_speech, attributes, filters):
         if part_of_speech in definitions.parts_of_speech:
             self.part_of_speech = part_of_speech
         else:
@@ -20,7 +27,7 @@ class IdentifyGenerator(QuestionGenerator):
             raise ValueError(f'No valid attributes provided for part of speech "{part_of_speech}"')
 
         # sort attributes in the defined order
-        attributes.sort(key = lambda attr: definitions.attribute_order[self.part_of_speech].index(attr))
+        attributes.sort(key = lambda x: order_attributes(x, self.part_of_speech))
 
         self.attributes = attributes
 
@@ -33,7 +40,6 @@ class IdentifyGenerator(QuestionGenerator):
             eng_attributes = f'{eng_attributes}{comma} and {attributes[-1]}'
 
         self.eng_format = self.eng_format.format(verb=eng_verb, attributes=eng_attributes, word='{word}')
-        super().__init__(filters)
 
     def generate(self, count, words):
         questions = []
@@ -54,10 +60,33 @@ class IdentifyGenerator(QuestionGenerator):
                         answer.append(key[index])
                 answers.add(tuple(answer))
 
-            print(answers)
-
-            questions.append(Question(eng_question, lat_question, answers))
+            checker = self.make_checker(answers)
+            questions.append(Question(eng_question, lat_question, checker, answers))
         
         return questions
 
+    def make_checker(self, answers):
+        def checker(submissions):
+            nonlocal answers
+            for submission in submissions:
+                pieces = submission.split()
+                submission = [val for val in pieces if val in definitions.value_to_attribute]
+
+                # wrong number of attributes given 
+                if len(pieces) != len(self.attributes):
+                    return 'wrong'
+
+                submission.sort(key = lambda x: order_values(x, self.part_of_speech))
+                submission = tuple(submission)
+
+                if submission not in answers:
+                    return 'wrong'
+                answers.remove(submission)
+
+            if answers:
+                return 'partial'
+            return 'correct'
+                
+
+        return checker
 

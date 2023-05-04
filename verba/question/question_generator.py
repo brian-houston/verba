@@ -1,4 +1,3 @@
 class QuestionGenerator:
-    def __init__(self, filters):
-        self.filters = filters
-
+    def __init__(self):
+        pass
