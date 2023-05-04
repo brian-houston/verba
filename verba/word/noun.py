@@ -55,3 +55,6 @@ class Noun(Word):
                 'gender': self.gender,
                 'meaning': self.meaning
                 }
+
+    def get_inflection_keys(self):
+        return self.inflections.keys()

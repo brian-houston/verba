@@ -21,9 +21,13 @@ class TestQuestion(unittest.TestCase):
         self.assertTrue(gen.attributes == definitions.attribute_order['noun'])
 
     def test_id_question_check_answers(self):
-        gen = IdentifyGenerator('noun', ['number', 'case'], '')
+        gen = IdentifyGenerator('noun', ['number', 'case'], [('nom', 'p')])
         n = word_utils.make_noun()
-        questions = gen.generate(1, [n])
-        self.assertTrue(questions[0].check_submissions(['nom p']) == 'partial')
-        self.assertTrue(questions[0].check_submissions(['s dat']) == 'partial')
-        self.assertTrue(questions[0].check_submissions(['gen s']) == 'correct')
+        question = next(gen.generate([n]))
+        self.assertTrue(question.check_submissions(['nom p']) == 'partial')
+        self.assertTrue(question.check_submissions(['s dat']) == 'partial')
+        self.assertTrue(question.check_submissions(['gen s']) == 'correct')
+        question = next(gen.generate([n]))
+        self.assertTrue(question.check_submissions(['nom p']) == 'partial')
+        self.assertTrue(question.check_submissions(['s dat']) == 'partial')
+        self.assertTrue(question.check_submissions(['gen s']) == 'correct')

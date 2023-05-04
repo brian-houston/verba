@@ -13,7 +13,7 @@ class IdentifyGenerator(QuestionGenerator):
     eng_format = 'What {verb} the {attributes} of the word "{word}"?'
     lat_format = ''
 
-    def __init__(self, part_of_speech, attributes, filters):
+    def __init__(self, part_of_speech, attributes, inflection_keys, filters=None):
         if part_of_speech in definitions.parts_of_speech:
             self.part_of_speech = part_of_speech
         else:
@@ -30,6 +30,8 @@ class IdentifyGenerator(QuestionGenerator):
         attributes.sort(key = lambda x: order_attributes(x, self.part_of_speech))
 
         self.attributes = attributes
+        self.inflection_keys = inflection_keys
+        self.filters = filters
 
         n_attr = len(attributes) 
         eng_verb = 'are' if n_attr > 1 else 'is'
@@ -41,12 +43,21 @@ class IdentifyGenerator(QuestionGenerator):
 
         self.eng_format = self.eng_format.format(verb=eng_verb, attributes=eng_attributes, word='{word}')
 
-    def generate(self, count, words):
-        questions = []
-        # filter words
+    def generate(self, words):
+        n = 0
+        while (n < 1000):
+            n += 1
 
-        for i in range(count):
-            inflection = words[i].get_inflection(('nom', 'p'))
+            word = QuestionGenerator.choice(words)
+            possible_inflection_keys = set(self.inflection_keys).intersection(word.get_inflection_keys())
+            possible_inflection_keys = list(possible_inflection_keys)
+
+            if not possible_inflection_keys:
+                continue
+
+            selected_key = QuestionGenerator.choice(possible_inflection_keys)
+
+            inflection = word.get_inflection(selected_key)
             eng_question = self.eng_format.format(word = inflection['word'])
             lat_question = self.lat_format
             answers = set()
@@ -61,9 +72,8 @@ class IdentifyGenerator(QuestionGenerator):
                 answers.add(tuple(answer))
 
             checker = self.make_checker(answers)
-            questions.append(Question(eng_question, lat_question, checker, answers))
+            yield Question(eng_question, lat_question, checker, answers)
         
-        return questions
 
     def make_checker(self, answers):
         def checker(submissions):
