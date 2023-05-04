@@ -47,11 +47,11 @@ class IdentifyGenerator(QuestionGenerator):
             for key in inflection['keys']:
                 answer = []
                 for attr in self.attributes:
-                    loc = definitions.inflections_lookup[self.part_of_speech][attr]
-                    if loc == 'base':
+                    if attr in inflection:
                         answer.append(inflection[attr])
                     else:
-                        answer.append(key[loc])
+                        index = definitions.inflections_key_index[self.part_of_speech][attr]
+                        answer.append(key[index])
                 answers.add(tuple(answer))
 
             print(answers)

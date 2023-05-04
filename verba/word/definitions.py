@@ -4,12 +4,10 @@ declensions = ['1', '2', '3', '4', '5']
 cases = ['nom', 'acc', 'gen', 'dat', 'abl']
 numbers = ['s', 'p']
 
-inflections_lookup = {
+inflections_key_index = {
         'noun': {
                 'case': 0,
                 'number': 1,
-                'gender': 'base',
-                'declension': 'base',
             }
         }
 
