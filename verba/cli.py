@@ -1,6 +1,7 @@
 import csv
 import verba.word.load_words as load_words
 import verba.input as input
+import verba.word.endings as endings
 from verba.question.identify_generator import IdentifyGenerator
 
 
