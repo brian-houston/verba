@@ -13,6 +13,14 @@ class Noun(Word):
             raise ValueError(f'Provided invalid noun gender')
 
         self.special = data['special'].split(',')
+
+        if 'i-stem' in self.special:
+            self.category = 'i-stem'
+        elif 'short-e' in self.special:
+            self.category = 'short-e'
+        else:
+            self.category = 'reg'
+
         self.init_stem(data['genitive'])
         self.init_inflections(data)
 
@@ -24,8 +32,8 @@ class Noun(Word):
 
         number = 'p' if 'plural' in self.special else 's'
         max_ending_len = 0
-        for d in ['1', '2']:
-            key = (d, self.gender, 'gen', number)
+        for d in definitions.noun_declensions:
+            key = (d, self.gender, self.category, 'gen', number)
             ending = endings.endings['noun'][key]
             ending_len = len(ending)
             if genitive[-ending_len:] == ending and ending_len > max_ending_len:
@@ -37,7 +45,7 @@ class Noun(Word):
     def init_inflections(self, data):
         self.inflections = {}
 
-        key_prefix = (self.declension, self.gender)
+        key_prefix = (self.declension, self.gender, self.category)
         cases = list(definitions.cases)
         numbers = list(definitions.numbers)
 
