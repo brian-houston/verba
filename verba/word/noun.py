@@ -25,15 +25,13 @@ class Noun(Word):
         self.init_inflections(data)
 
     def init_stem(self, genitive):
-        if '5-long-e' in self.special:
-            self.declension = '5'
-            self.stem = genitive[:-2]
-            return
-
         number = 'p' if 'plural' in self.special else 's'
         max_ending_len = 0
         for d in definitions.noun_declensions:
             key = (d, self.gender, self.category, 'gen', number)
+            if key not in endings.endings['noun']:
+                continue
+
             ending = endings.endings['noun'][key]
             ending_len = len(ending)
             if genitive[-ending_len:] == ending and ending_len > max_ending_len:
@@ -45,6 +43,7 @@ class Noun(Word):
     def init_inflections(self, data):
         self.inflections = {}
 
+        print(data)
         key_prefix = (self.declension, self.gender, self.category)
         cases = list(definitions.cases)
         numbers = list(definitions.numbers)
@@ -53,6 +52,7 @@ class Noun(Word):
             numbers = ['p']
         elif 'singular' in self.special:
             numbers = ['s']
+
 
         products = itertools.product(cases, numbers)
         for key_suffix in products:
