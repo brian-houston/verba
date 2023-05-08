@@ -18,6 +18,14 @@ class TestNoun(unittest.TestCase):
         with self.assertRaises(ValueError):
             n = word_utils.make_noun(gender='z')
 
+    def test_noun_bad_genitive(self):
+        with self.assertRaises(ValueError):
+            n = word_utils.make_noun(genitive='mille')
+        with self.assertRaises(ValueError):
+            n = word_utils.make_noun(genitive='res')
+        with self.assertRaises(ValueError):
+            n = word_utils.make_noun(genitive='rivus')
+
     # test 1st declension endings
     def test_noun_inflections_dec_1(self):
         n = word_utils.make_noun(dec='1', gender='f', genitive='litterae')
@@ -53,7 +61,21 @@ class TestNoun(unittest.TestCase):
         self.assertTrue(('dat', 's') in keys)
         self.assertTrue(('nom', 'p') in keys)
 
+    def test_noun_i_stem(self):
+        n = word_utils.make_noun(dec='3', gender='n', genitive='animalis', special='i-stem')
+        self.assertTrue(n.get_inflection(('nom', 'p'))['word'] == 'animalia')
+        self.assertTrue(n.get_inflection(('acc', 'p'))['word'] == 'animalia')
+        self.assertTrue(n.get_inflection(('abl', 's'))['word'] == 'animalī')
+
+    def test_noun_short_e(self):
+        n = word_utils.make_noun(dec='3', gender='n', genitive='reī', special='short-e')
+        self.assertTrue(n.get_inflection(('gen', 's'))['word'] == 'reī')
+        self.assertTrue(n.get_inflection(('dat', 's'))['word'] == 'reī')
+
     def test_noun_inflections_gender(self):
         n = word_utils.make_noun(dec='2', gender='m', genitive='virī', ns='vir')
-        keys = n.get_inflection(('gen', 's'))['keys']
         self.assertTrue(n.get_inflection(('gen', 's'))['gender'] == 'm')
+
+    def test_noun_inflections_meaning(self):
+        n = word_utils.make_noun(meaning='whatever')
+        self.assertTrue(n.get_inflection(('gen', 's'))['meaning'] == 'whatever')

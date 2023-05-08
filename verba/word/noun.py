@@ -21,10 +21,11 @@ class Noun(Word):
         else:
             self.category = 'reg'
 
-        self.init_stem(data['genitive'])
-        self.init_inflections(data)
+        self.__init_stem_and_declension(data)
+        self.__init_inflections(data)
 
-    def init_stem(self, genitive):
+    def __init_stem_and_declension(self, data):
+        genitive = data['genitive']
         number = 'p' if 'plural' in self.special else 's'
         max_ending_len = 0
         for d in definitions.noun_declensions:
@@ -39,11 +40,13 @@ class Noun(Word):
                 self.stem = genitive[:-ending_len]
                 max_ending_len = ending_len
 
+        if max_ending_len == 0:
+            raise ValueError(f'Failed to identify declension for the noun whose genitive is {genitive}')
 
-    def init_inflections(self, data):
+
+    def __init_inflections(self, data):
         self.inflections = {}
 
-        print(data)
         key_prefix = (self.declension, self.gender, self.category)
         cases = list(definitions.cases)
         numbers = list(definitions.numbers)
@@ -53,10 +56,11 @@ class Noun(Word):
         elif 'singular' in self.special:
             numbers = ['s']
 
-
         products = itertools.product(cases, numbers)
         for key_suffix in products:
             key = key_prefix + key_suffix
+            if key not in endings.endings['noun']:
+                raise ValueError(f"Failed to find ending for {data['genitive']} in {key}")
             ending = endings.endings['noun'][key]
             self.inflections[key_suffix] = self.stem + ending
 
@@ -64,7 +68,12 @@ class Noun(Word):
             self.inflections[('nom', 's')] = data['nominative_singular']
 
     def __repr__(self):
-        return f'Noun: {self.stem}'
+        principal_parts = ''
+        if 'plural' in self.special:
+            principal_parts = f"{self.inflections[('nom', 'p')]}, {self.inflections[('gen', 'p')]}, {self.gender}"
+        else:
+            principal_parts = f"{self.inflections[('nom', 's')]}, {self.inflections[('gen', 's')]}, {self.gender}"
+        return f'Noun: {principal_parts}'
 
     def has_inflection(self, key):
         return key in self.inflections
