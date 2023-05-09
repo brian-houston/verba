@@ -35,6 +35,9 @@ def read_latin_input():
             print('\b \b', end='', flush=True)
             if char_list:
                 char_list.pop()
+        elif c == readchar.key.SPACE:
+            print(' ', end='', flush=True)
+            char_list += ' '
         elif c == '-':
             # do nothing if no characters entered
             if not char_list:
