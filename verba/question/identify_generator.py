@@ -44,16 +44,20 @@ class IdentifyGenerator(QuestionGenerator):
         self.eng_format = self.eng_format.format(verb=eng_verb, attributes=eng_attributes, word='{word}')
 
     def generate(self, words):
-        n = 0
-        while (n < 1000):
-            n += 1
+        fails = 0
+        while True:
+            if fails > 10:
+                return StopIteration()
 
             word = QuestionGenerator.choice(words)
             possible_inflection_keys = set(self.inflection_keys).intersection(word.get_inflection_keys())
             possible_inflection_keys = list(possible_inflection_keys)
 
             if not possible_inflection_keys:
+                fails += 1
                 continue
+            else: 
+                fails = 0
 
             selected_key = QuestionGenerator.choice(possible_inflection_keys)
 
