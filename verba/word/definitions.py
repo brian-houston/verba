@@ -18,7 +18,15 @@ attribute_order = {
         'participle': ['tense', 'voice', 'gender', 'case', 'number'],
         }
 
+key_order = ['group', 'mood', 'tense', 'voice', 'gender', 'case', 'number']
+
 value_to_attribute = {
+            '1': 'group',
+            '1/2': 'group',
+            '2': 'group',
+            '3': 'group',
+            '4': 'group',
+            '5': 'group',
             'f': 'gender',
             'm': 'gender',
             'n': 'gender',
