@@ -1,7 +1,7 @@
 import verba.word.definitions as definitions
 
 class WordKey:
-    def __init__(self, *args, only=None):
+    def __init__(self, *args):
         self.attributes = {}
         for arg in args:
             if arg not in definitions.value_to_attribute:
@@ -11,13 +11,13 @@ class WordKey:
             if attr_name in self.attributes:
                 raise ValueError(f'Provided two arguments for the attribute {attr_name}')
 
-            if only and attr_name not in only:
-                continue
-
             self.attributes[attr_name] = arg
 
     def union(self, other):
         return WordKey(*(other.attributes | self.attributes).values()) 
+
+    def filter(self, attr_names):
+        return WordKey(*[v for k,v in self.attributes.items() if k in attr_names])
 
     def __repr__(self):
         pairs = sorted(self.attributes.items(), key=lambda x: definitions.key_order.index(x[0]))

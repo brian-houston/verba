@@ -40,3 +40,8 @@ class TestKey(unittest.TestCase):
     def test_repr(self):
         key1 = WK('s', 'nom', 'f')
         self.assertTrue(repr(key1) == '(f, nom, s)')
+
+    def test_filter(self):
+        key1 = WK('s', 'nom', 'f', '1')
+        key2 = WK('s')
+        self.assertTrue(key1.filter(['number']) == key2)

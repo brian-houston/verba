@@ -1,6 +1,7 @@
 import csv
 import itertools
 from importlib.resources import files
+from verba.word.word_key import WordKey as WK
 
 def line_product(line):
     line = {k: v.split() for k, v in line.items()}
@@ -20,7 +21,7 @@ def load_endings():
         tsv_file = csv.DictReader(file, delimiter='\t')
         for line in tsv_file:
             for lp in line_product(line):
-                key = (lp['declension'], lp['gender'], lp['category'], lp['case'], lp['number'])
+                key = WK(*[v for k,v in lp.items() if k != 'ending']) 
                 endings['noun'][key] = line['ending']
 
 load_endings()

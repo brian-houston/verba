@@ -1,13 +1,7 @@
 from verba.question.question_generator import QuestionGenerator
 from verba.question.question import Question
 import verba.word.definitions as definitions
-
-def order_attributes(attr, part_of_speech):
-    return definitions.attribute_order[part_of_speech].index(attr)
-
-def order_values(val, part_of_speech):
-    attr = definitions.value_to_attribute[val]
-    return order_attributes(attr, part_of_speech)
+from verba.word.word_key import WordKey as WK
 
 class IdentifyGenerator(QuestionGenerator):
     eng_format = 'What {verb} the {attributes} of the word "{word}"?'
@@ -21,13 +15,10 @@ class IdentifyGenerator(QuestionGenerator):
 
         # filter out attributes which do not apply to this part of speech
         attributes = [attr for attr in attributes 
-                      if attr in definitions.attribute_order[self.part_of_speech]]
+                      if attr in definitions.key_order]
 
         if not attributes:
             raise ValueError(f'No valid attributes provided for part of speech "{part_of_speech}"')
-
-        # sort attributes in the defined order
-        attributes.sort(key = lambda x: order_attributes(x, self.part_of_speech))
 
         self.attributes = attributes
         self.inflection_keys = inflection_keys
@@ -65,37 +56,22 @@ class IdentifyGenerator(QuestionGenerator):
             eng_question = self.eng_format.format(word = inflection['word'])
             lat_question = self.lat_format
             answers = set()
+
             for key in inflection['keys']:
-                answer = []
-                for attr in self.attributes:
-                    if attr in inflection:
-                        answer.append(inflection[attr])
-                    else:
-                        index = definitions.inflections_key_index[self.part_of_speech][attr]
-                        answer.append(key[index])
-                answers.add(tuple(answer))
+                answers.add(key.union(word.get_key()).filter(self.attributes))
 
             checker = self.make_checker(answers)
             yield Question(eng_question, lat_question, checker, answers)
         
-
     def make_checker(self, answers):
         def checker(submissions):
             nonlocal answers
             for submission in submissions:
-                pieces = submission.split()
-                submission = [val for val in pieces if val in definitions.value_to_attribute]
+                key = WK(*submission.split())
 
-                # wrong number of attributes given 
-                if len(pieces) != len(self.attributes):
+                if key not in answers:
                     return 'wrong'
-
-                submission.sort(key = lambda x: order_values(x, self.part_of_speech))
-                submission = tuple(submission)
-
-                if submission not in answers:
-                    return 'wrong'
-                answers.remove(submission)
+                answers.remove(key)
 
             if answers:
                 return 'partial'

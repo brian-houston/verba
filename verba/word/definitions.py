@@ -11,14 +11,7 @@ inflections_key_index = {
             }
         }
 
-attribute_order = {
-        'noun': ['gender', 'case', 'number'],
-        'adjective': ['gender', 'case', 'number'],
-        'verb': ['mood', 'tense', 'voice', 'person', 'number'],
-        'participle': ['tense', 'voice', 'gender', 'case', 'number'],
-        }
-
-key_order = ['group', 'mood', 'tense', 'voice', 'gender', 'case', 'number']
+key_order = ['group', 'category', 'mood', 'tense', 'voice', 'gender', 'case', 'number']
 
 value_to_attribute = {
             '1': 'group',
@@ -50,5 +43,7 @@ value_to_attribute = {
             '2nd': 'person',
             '3rd': 'person',
             'act': 'voice',
-            'pas': 'voice',
+            'pass': 'voice',
+            'i-stem': 'category',
+            'short-e': 'category'
         }

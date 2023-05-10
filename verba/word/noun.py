@@ -2,6 +2,7 @@ import itertools
 from verba.word.word import Word 
 import verba.word.definitions as definitions
 import verba.word.endings as endings
+from verba.word.word_key import WordKey as WK
 
 class Noun(Word):
     def __init__(self, data):
@@ -29,7 +30,7 @@ class Noun(Word):
         number = 'p' if 'plural' in self.special else 's'
         max_ending_len = 0
         for d in definitions.noun_declensions:
-            key = (d, self.gender, self.category, 'gen', number)
+            key = WK(d, self.gender, self.category, 'gen', number)
             if key not in endings.endings['noun']:
                 continue
 
@@ -47,7 +48,8 @@ class Noun(Word):
     def __init_inflections(self, data):
         self.inflections = {}
 
-        key_prefix = (self.declension, self.gender, self.category)
+        self_key = self.get_key() 
+         
         cases = list(definitions.cases)
         numbers = list(definitions.numbers)
 
@@ -57,22 +59,23 @@ class Noun(Word):
             numbers = ['s']
 
         products = itertools.product(cases, numbers)
-        for key_suffix in products:
-            key = key_prefix + key_suffix
-            if key not in endings.endings['noun']:
-                raise ValueError(f"Failed to find ending for {data['genitive']} in {key}")
-            ending = endings.endings['noun'][key]
-            self.inflections[key_suffix] = self.stem + ending
+        for prod in products:
+            infl_key = WK(*prod)
+            ending_key = self_key.union(infl_key)
+            if ending_key not in endings.endings['noun']:
+                raise ValueError(f"Failed to find ending for {data['genitive']} in {ending_key}")
+            ending = endings.endings['noun'][ending_key]
+            self.inflections[infl_key] = self.stem + ending
 
         if 'nominative_singular' in data and data['nominative_singular']:
-            self.inflections[('nom', 's')] = data['nominative_singular']
+            self.inflections[WK('nom', 's')] = data['nominative_singular']
 
     def __repr__(self):
         principal_parts = ''
         if 'plural' in self.special:
-            principal_parts = f"{self.inflections[('nom', 'p')]}, {self.inflections[('gen', 'p')]}, {self.gender}"
+            principal_parts = f"{self.inflections[WK('nom', 'p')]}, {self.inflections[WK('gen', 'p')]}, {self.gender}"
         else:
-            principal_parts = f"{self.inflections[('nom', 's')]}, {self.inflections[('gen', 's')]}, {self.gender}"
+            principal_parts = f"{self.inflections[WK('nom', 's')]}, {self.inflections[WK('gen', 's')]}, {self.gender}"
         return f'Noun: {principal_parts}'
 
     def has_inflection(self, key):
@@ -90,3 +93,6 @@ class Noun(Word):
 
     def get_inflection_keys(self):
         return self.inflections.keys()
+
+    def get_key(self):
+        return WK(self.declension, self.gender, self.category)
