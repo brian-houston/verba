@@ -53,11 +53,11 @@ class IdentifyGenerator(QuestionGenerator):
             selected_key = QuestionGenerator.choice(possible_inflection_keys)
 
             inflection = word.get_inflection(selected_key)
-            eng_question = self.eng_format.format(word = inflection['word'])
+            eng_question = self.eng_format.format(word = inflection)
             lat_question = self.lat_format
             answers = set()
 
-            for key in inflection['keys']:
+            for key in word.get_keys_for_inflection(inflection):
                 answers.add(key.union(word.get_key()).filter(self.attributes))
 
             checker = self.make_checker(answers)

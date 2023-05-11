@@ -2,7 +2,7 @@ from verba.question.question_generator import QuestionGenerator
 from verba.question.question import Question
 
 class VocabGenerator(QuestionGenerator):
-    eng_format = 'What is the definition of "{word}" {key}.'
+    eng_format = 'What is the definition of "{word}"?'
     lat_format = ''
 
     def __init__(self, inflection_keys, filters=None):
@@ -28,10 +28,10 @@ class VocabGenerator(QuestionGenerator):
             selected_key = QuestionGenerator.choice(possible_inflection_keys)
             inflection = word.get_inflection(selected_key)
 
-            eng_question = self.eng_format.format(word=inflection['word'], key=selected_key)
+            eng_question = self.eng_format.format(word=inflection)
             lat_question = self.lat_format
             answers = set()
-            answers.add(inflection['meaning'])
+            answers.add(word.get_meaning())
 
             checker = self.make_checker(answers)
             yield Question(eng_question, lat_question, checker, answers)

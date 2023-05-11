@@ -17,7 +17,7 @@ class WordKey:
         return WordKey(*(other.attributes | self.attributes).values()) 
 
     def filter(self, attr_names):
-        return WordKey(*[v for k,v in self.attributes.items() if k in attr_names])
+        return WordKey(*[v for k, v in self.attributes.items() if k in attr_names])
 
     def __repr__(self):
         pairs = sorted(self.attributes.items(), key=lambda x: definitions.key_order.index(x[0]))

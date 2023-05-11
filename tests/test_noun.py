@@ -31,52 +31,44 @@ class TestNoun(unittest.TestCase):
     def test_inflections_dec_1(self):
         n = word_utils.make_noun(dec='1', gender='f', genitive='litterae')
         self.assertTrue(n.has_inflection(WK('nom', 's')))
-        self.assertTrue(n.get_inflection(WK('nom', 's'))['word'] == 'littera')
-        self.assertTrue(n.get_inflection(WK('acc', 's'))['word'] == 'litteram')
-        self.assertTrue(n.get_inflection(WK('gen', 's'))['word'] == 'litterae')
-        self.assertTrue(n.get_inflection(WK('dat', 's'))['word'] == 'litterae')
-        self.assertTrue(n.get_inflection(WK('abl', 's'))['word'] == 'litterā')
-        self.assertTrue(n.get_inflection(WK('nom', 'p'))['word'] == 'litterae')
-        self.assertTrue(n.get_inflection(WK('acc', 'p'))['word'] == 'litterās')
-        self.assertTrue(n.get_inflection(WK('gen', 'p'))['word'] == 'litterārum')
-        self.assertTrue(n.get_inflection(WK('dat', 'p'))['word'] == 'litterīs')
-        self.assertTrue(n.get_inflection(WK('abl', 'p'))['word'] == 'litterīs')
+        self.assertTrue(n.get_inflection(WK('nom', 's')) == 'littera')
+        self.assertTrue(n.get_inflection(WK('acc', 's')) == 'litteram')
+        self.assertTrue(n.get_inflection(WK('gen', 's')) == 'litterae')
+        self.assertTrue(n.get_inflection(WK('dat', 's')) == 'litterae')
+        self.assertTrue(n.get_inflection(WK('abl', 's')) == 'litterā')
+        self.assertTrue(n.get_inflection(WK('nom', 'p')) == 'litterae')
+        self.assertTrue(n.get_inflection(WK('acc', 'p')) == 'litterās')
+        self.assertTrue(n.get_inflection(WK('gen', 'p')) == 'litterārum')
+        self.assertTrue(n.get_inflection(WK('dat', 'p')) == 'litterīs')
+        self.assertTrue(n.get_inflection(WK('abl', 'p')) == 'litterīs')
 
     # test 2nd declension endings with different ending in the nominative singular
     def test_inflections_nom_s(self):
         n = word_utils.make_noun(dec='2', gender='m', genitive='virī', ns='vir')
         self.assertTrue(n.has_inflection(WK('nom', 's')))
-        self.assertTrue(n.get_inflection(WK('nom', 's'))['word'] == 'vir')
+        self.assertTrue(n.get_inflection(WK('nom', 's')) == 'vir')
 
     # test plural only noun
     def test_plural(self):
         n = word_utils.make_noun(dec='2', gender='m', genitive='liberōrum', special="plural")
         self.assertFalse(n.has_inflection(WK('nom', 's')))
         self.assertTrue(n.has_inflection(WK('nom', 'p')))
-        self.assertTrue(n.get_inflection(WK('nom', 'p'))['word'] == 'liberī')
+        self.assertTrue(n.get_inflection(WK('nom', 'p')) == 'liberī')
 
     def test_inflections_keys(self):
         n = word_utils.make_noun(dec='1', gender='f', genitive='litterae')
-        keys = n.get_inflection(WK('gen', 's'))['keys']
+        keys = n.get_keys_for_inflection(n.get_inflection(WK('gen', 's')))
         self.assertTrue(WK('gen', 's') in keys)
         self.assertTrue(WK('dat', 's') in keys)
         self.assertTrue(WK('nom', 'p') in keys)
 
     def test_i_stem(self):
         n = word_utils.make_noun(dec='3', gender='n', genitive='animalis', special='i-stem')
-        self.assertTrue(n.get_inflection(WK('nom', 'p'))['word'] == 'animalia')
-        self.assertTrue(n.get_inflection(WK('acc', 'p'))['word'] == 'animalia')
-        self.assertTrue(n.get_inflection(WK('abl', 's'))['word'] == 'animalī')
+        self.assertTrue(n.get_inflection(WK('nom', 'p')) == 'animalia')
+        self.assertTrue(n.get_inflection(WK('acc', 'p')) == 'animalia')
+        self.assertTrue(n.get_inflection(WK('abl', 's')) == 'animalī')
 
     def test_short_e(self):
         n = word_utils.make_noun(dec='3', gender='n', genitive='reī', special='short-e')
-        self.assertTrue(n.get_inflection(WK('gen', 's'))['word'] == 'reī')
-        self.assertTrue(n.get_inflection(WK('dat', 's'))['word'] == 'reī')
-
-    def test_inflections_gender(self):
-        n = word_utils.make_noun(dec='2', gender='m', genitive='virī', ns='vir')
-        self.assertTrue(n.get_inflection(WK('gen', 's'))['gender'] == 'm')
-
-    def test_inflections_meaning(self):
-        n = word_utils.make_noun(meaning='whatever')
-        self.assertTrue(n.get_inflection(WK('gen', 's'))['meaning'] == 'whatever')
+        self.assertTrue(n.get_inflection(WK('gen', 's')) == 'reī')
+        self.assertTrue(n.get_inflection(WK('dat', 's')) == 'reī')

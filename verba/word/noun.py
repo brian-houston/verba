@@ -82,17 +82,16 @@ class Noun(Word):
         return key in self.inflections
 
     def get_inflection(self, key):
-        word = self.inflections[key]
-        keys = [k for (k, v) in self.inflections.items() if v == word]
-        return {
-                'word': word,
-                'keys': keys,
-                'gender': self.gender,
-                'meaning': self.meaning
-                }
+        return self.inflections[key]
 
     def get_inflection_keys(self):
         return self.inflections.keys()
 
     def get_key(self):
         return WK(self.declension, self.gender, self.category)
+
+    def get_keys_for_inflection(self, inflection):
+        return [k for k, v in self.inflections.items() if v == inflection]
+
+    def get_meaning(self):
+        return self.meaning

@@ -30,10 +30,10 @@ class MacronGenerator(QuestionGenerator):
             selected_key = QuestionGenerator.choice(possible_inflection_keys)
             inflection = word.get_inflection(selected_key)
 
-            eng_question = self.eng_format.format(word=demacronify(inflection['word']), key=selected_key)
+            eng_question = self.eng_format.format(word=demacronify(inflection), key=selected_key)
             lat_question = self.lat_format
             answers = set()
-            answers.add(inflection['word'])
+            answers.add(inflection)
 
             checker = self.make_checker(answers)
             yield Question(eng_question, lat_question, checker, answers)
