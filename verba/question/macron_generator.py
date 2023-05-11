@@ -36,7 +36,7 @@ class MacronGenerator(QuestionGenerator):
             answers.add(inflection)
 
             checker = self.make_checker(answers)
-            yield Question(eng_question, lat_question, checker, answers)
+            yield Question(eng_question, lat_question, checker, answers, meaning=word.get_meaning())
         
 
     def make_checker(self, answers):

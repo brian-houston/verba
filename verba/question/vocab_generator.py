@@ -34,7 +34,7 @@ class VocabGenerator(QuestionGenerator):
             answers.add(word.get_meaning())
 
             checker = self.make_checker(answers)
-            yield Question(eng_question, lat_question, checker, answers)
+            yield Question(eng_question, lat_question, checker, answers, meaning="No Cheating!")
         
 
     def make_checker(self, answers):
