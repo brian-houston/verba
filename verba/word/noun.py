@@ -50,8 +50,8 @@ class Noun(Word):
 
         self_key = self.get_key() 
          
-        cases = list(definitions.cases)
-        numbers = list(definitions.numbers)
+        cases = definitions.cases
+        numbers = ['s', 'p'] 
 
         if 'plural' in self.special:
             numbers = ['p']
@@ -69,6 +69,9 @@ class Noun(Word):
 
         if 'nominative_singular' in data and data['nominative_singular']:
             self.inflections[WK('nom', 's')] = data['nominative_singular']
+
+        if self.gender == 'n' and 'plural' not in self.special:
+            self.inflections[WK('acc', 's')] = self.inflections[WK('nom', 's')] 
 
     def __repr__(self):
         principal_parts = ''
