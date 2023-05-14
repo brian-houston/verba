@@ -21,11 +21,10 @@ def make_checker(answers):
     def checker(submissions):
         nonlocal first_input
         if first_input:
-            print(list(answers)[0])
             first_input = False
             return 'continue'
 
-        if 'c' in answers:
+        if 'c' in submissions:
             return 'correct'
 
         return 'wrong'
