@@ -12,7 +12,7 @@ class Question:
         return self.latin_question
 
     def get_answers_text(self):
-        return repr(self.answers)
+        return '; '.join(self.answers) 
 
     def get_meaning_text(self):
         if self.meaning:
