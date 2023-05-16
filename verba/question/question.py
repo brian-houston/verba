@@ -19,11 +19,5 @@ class Question:
             return self.meaning
         return 'There is no definition hint for this question.'
 
-    def print_english(self):
-        print(self.english_question)
-
-    def print_latin(self):
-        print(self.latin_question)
-
     def check_submissions(self, submissions):
         return self.checker(submissions)
