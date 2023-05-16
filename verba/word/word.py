@@ -4,3 +4,6 @@ class Word:
         self.meaning = data['meaning']
         self.chapter = int(data['chapter'])
 
+    def get_pofs(self):
+        return self.part_of_speech
+
