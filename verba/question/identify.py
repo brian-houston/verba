@@ -7,13 +7,13 @@ eng_format = 'What {verb} the {attributes} of the word "{word}"?'
 lat_format = ''
 
 def identify_question_generator(words, inflection_keys, attributes):
-    n_attr = len(attributes) 
-    eng_verb = 'are' if n_attr > 1 else 'is'
-    eng_attributes = {}
     for pofs, attr_list in attributes.items():
+        n_attr = len(attr_list)
+        eng_verb = 'are' if n_attr > 1 else 'is'
+        eng_attributes = {}
         eng_attributes[pofs] = attr_list[0]
         if n_attr > 1:
-            eng_attributes[pofs] = ', '.join(attr_list[-1])
+            eng_attributes[pofs] = ', '.join(attr_list[:-1])
             comma = '' if n_attr == 2 else ','
             eng_attributes[pofs] = f'{eng_attributes[pofs]}{comma} and {attr_list[-1]}'
 
