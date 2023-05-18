@@ -95,6 +95,3 @@ class Noun(Word):
 
     def get_keys_for_inflection(self, inflection):
         return [k for k, v in self.inflections.items() if v == inflection]
-
-    def get_meaning(self):
-        return self.meaning

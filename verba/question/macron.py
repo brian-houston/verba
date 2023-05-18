@@ -15,7 +15,7 @@ def macron_question_generator(words, inflection_keys, filters=None):
         answers.add(inflection)
 
         checker = make_checker(answers)
-        yield Question(eng_question, lat_question, checker, answers, meaning=word.get_meaning())
+        yield Question(eng_question, lat_question, checker, answers, meaning=word.meaning)
 
 def make_checker(answers):
     def checker(submissions):

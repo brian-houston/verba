@@ -19,7 +19,7 @@ def identify_question_generator(words, inflection_keys, attributes):
 
     for word, key in utils.inflection_generator(words, inflection_keys):
         inflection = word.get_inflection(key)
-        pofs = word.get_pofs()
+        pofs = word.part_of_speech
         eng_question = eng_format.format(verb=eng_verb, attributes=eng_attributes[pofs], word = inflection)
         lat_question = lat_format
         answers = set()
@@ -28,7 +28,7 @@ def identify_question_generator(words, inflection_keys, attributes):
             answers.add(key.union(word.get_key()).filter(attributes[pofs]))
 
         checker = make_checker(answers)
-        yield Question(eng_question, lat_question, checker, answers, meaning=word.get_meaning())
+        yield Question(eng_question, lat_question, checker, answers, meaning=word.meaning)
     
 def make_checker(answers):
     def checker(submissions):

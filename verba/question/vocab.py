@@ -11,7 +11,7 @@ def vocab_question_generator(words, inflection_keys, filters=None):
         eng_question = eng_format.format(word=inflection)
         lat_question = lat_format
         answers = set()
-        answers.add(word.get_meaning())
+        answers.add(word.meaning)
 
         checker = make_checker(answers)
         yield Question(eng_question, lat_question, checker, answers, meaning="No Cheating!")
