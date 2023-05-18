@@ -8,9 +8,6 @@ class WordKey:
                 continue
 
             attr_name = definitions.value_to_attribute[arg]
-            if attr_name in self.attributes:
-                raise ValueError(f'Provided two arguments for the attribute {attr_name}')
-
             self.attributes[attr_name] = arg
 
     def union(self, other):
