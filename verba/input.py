@@ -52,7 +52,7 @@ def read_latin_input():
                 vowel = short_vowels[long_vowels.index(char_list[-1])]
                 print('\b' + vowel, end='', flush=True)
                 char_list[-1] = vowel 
-        elif c.isalpha():
+        elif c.isalpha() or c == ',':
             print(c, end='', flush=True)
             char_list += c
 
