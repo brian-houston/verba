@@ -1,4 +1,4 @@
-import verba.word.load_words as load_words
+from verba.load import load_words, load_keys
 from verba.input import read_latin_input
 from verba.word.word_key import WordKey as WK
 from verba.console import console
@@ -27,9 +27,9 @@ def answer_question(question):
             console.print(f'The answer is "{question.get_answers_text()}". Input "c" if you were correct and anything else otherwise.')
 
 def main():
-    words = load_words.load_words('LL')
+    words = load_words('LL')
     settings = select_generator_settings()
-    keys = [WK('acc', 's')]
+    keys = {'noun':[WK('acc', 's')]}
     generator = create_generator(settings, words, keys)
 
     for question in generator:

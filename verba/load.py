@@ -2,6 +2,9 @@ import csv
 from importlib.resources import files
 from verba.word.noun import Noun
 
+def load_keys(library_name):
+    pass
+
 def load_words(library_name):
     words = []
 
