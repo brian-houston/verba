@@ -15,9 +15,13 @@ def inflection_generator(words, inflection_keys):
 
         i = random.choices(range(n_words), weights=weights)[0]
         word = words[i]
-
-        possible_inflection_keys = set(inflection_keys).intersection(word.get_inflection_keys())
-        possible_inflection_keys = list(possible_inflection_keys)
+        pofs = word.part_of_speech
+        possible_inflection_keys = None
+        if pofs not in inflection_keys:
+            possible_inflection_keys = word.get_inflection_keys()
+        else:
+            possible_inflection_keys = set(inflection_keys[pofs]).intersection(word.get_inflection_keys())
+            possible_inflection_keys = list(possible_inflection_keys)
 
         if not possible_inflection_keys:
             fails += 1
