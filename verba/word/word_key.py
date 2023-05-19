@@ -32,6 +32,8 @@ class WordKey:
         return hash(tuple(sorted(self.attributes)))
 
     def __eq__(self, other):
+        if not isinstance(other, WordKey):
+            return False
         return self.attributes == other.attributes
 
 
