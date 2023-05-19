@@ -3,10 +3,7 @@ from verba.word.word_key import WordKey as WK
 
 class TestKey(unittest.TestCase):
     def test_duplicate_attributes(self):
-        with self.assertRaises(ValueError):
-            key = WK('s', 'p')
-        with self.assertRaises(ValueError):
-            key = WK('f', 'm')
+        self.assertTrue(WK('s', 'p') == WK('p'))
 
     def test_equality(self):
         key1 = WK('nom', 's')

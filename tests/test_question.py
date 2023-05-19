@@ -1,29 +1,40 @@
 import unittest 
 from verba.question.identify import identify_question_generator 
+from verba.question.macron import macron_question_generator 
+from verba.question.vocab import vocab_question_generator 
 import tests.word_utils as word_utils
 from verba.word.word_key import WordKey as WK
+test_keys = {
+        'noun': [WK('nom', 'p')]
+        }
 
 class TestQuestion(unittest.TestCase):
-    def test_id_question_no_attributes(self):
-        n = word_utils.make_noun()
-        with self.assertRaises(ValueError):
-            gen = identify_question_generator([n], [WK('nom', 'p')], [])
-            next(gen)
-
-    def test_id_question_invalid_attributes(self):
-        n = word_utils.make_noun()
-        with self.assertRaises(ValueError):
-            gen = identify_question_generator([n], [WK('nom', 'p')], ['color'])
-            next(gen)
-
     def test_id_question_check_answers(self):
-        n = word_utils.make_noun()
-        gen = identify_question_generator([n], [WK('nom', 'p')], ['number', 'case'])
+        n = word_utils.make_noun(genitive='litterae')
+        gen = identify_question_generator([n], test_keys, {'noun': ['number', 'case']})
         question = next(gen)
+        self.assertTrue(question.check_submissions(['nom']) == 'wrong')
+        self.assertTrue(question.check_submissions(['p']) == 'wrong')
+        self.assertTrue(question.check_submissions(['afdkl']) == 'wrong')
         self.assertTrue(question.check_submissions(['nom p']) == 'partial')
         self.assertTrue(question.check_submissions(['s dat']) == 'partial')
         self.assertTrue(question.check_submissions(['gen s']) == 'correct')
+
+        gen = identify_question_generator([n], test_keys, {'noun': ['number', 'case']})
         question = next(gen)
-        self.assertTrue(question.check_submissions(['nom p']) == 'partial')
-        self.assertTrue(question.check_submissions(['s dat']) == 'partial')
-        self.assertTrue(question.check_submissions(['gen s']) == 'correct')
+        self.assertTrue(question.check_submissions(['gen s', 's dat', 'nom p']) == 'correct')
+
+    def test_macron_question_check_answers(self):
+        n = word_utils.make_noun(genitive='fēminae')
+        gen = macron_question_generator([n], test_keys)
+        question = next(gen)
+        self.assertTrue(question.check_submissions(['feminae']) == 'wrong')
+        self.assertTrue(question.check_submissions(['fēminae']) == 'correct')
+
+    def test_vocab_question_check_answers(self):
+        n = word_utils.make_noun(genitive='fēminae')
+        gen = vocab_question_generator([n], test_keys)
+        question = next(gen)
+        self.assertTrue(question.check_submissions(['whatever']) == 'continue')
+        self.assertTrue(question.check_submissions(['whatever']) == 'wrong')
+        self.assertTrue(question.check_submissions(['c']) == 'correct')
