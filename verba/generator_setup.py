@@ -22,7 +22,7 @@ question_types_setting_list = {
 def translate_setting_input(setting, input):
     if setting == 'level':
         try:
-            return int(input)
+            return max(1, int(input))
         except:
             return None
     if setting == 'chapters':
@@ -36,11 +36,14 @@ def translate_setting_input(setting, input):
                     start = int(digits[0])
                     end = int(digits[1]) + 1
                     chapters.update(range(start, end))
-            return chapters
+            return chapters if chapters else None
         except:
             return None
     if setting == 'filters':
         try:
+            input = input.strip()
+            if not input:
+                return {}
             filters = {}
             for s in input.split(','):
                 s = s.strip()
