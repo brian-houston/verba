@@ -27,9 +27,9 @@ def answer_question(question):
             console.print(f'The answer is "{question.get_answers_text()}". Input "c" if you were correct and anything else otherwise.')
 
 def main():
+    keys = load_keys('LL')
     words = load_words('LL')
     settings = select_generator_settings()
-    keys = {'noun':[WK('acc', 's')]}
     generator = create_generator(settings, words, keys)
 
     for question in generator:

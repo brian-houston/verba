@@ -87,7 +87,7 @@ def select_generator_settings():
     for setting_name in question_types_setting_list[question_type]:
         while True:
             value = translate_setting_input(setting_name, input(setting_ask_user_text[setting_name]))
-            if value:
+            if value != None:
                 settings[setting_name] = value
                 break
             console.print("What you entered is not valid, so let's try again.")
@@ -98,9 +98,14 @@ def does_word_match_filter(word, filter):
     return True
 
 def create_generator(settings, words, keys):
-    if 'chapters' in settings and settings['chapters']:
+    if 'level' in settings:
+        new_keys = {}
+        for pofs, list_v in keys.items():
+            new_keys[pofs] = [key for chapter, key in list_v if chapter <= settings['level']]
+        keys = new_keys
+    if 'chapters' in settings:
         words = [w for w in words if w.chapter in settings['chapters']]
-    if 'filters' in settings and settings['filters']:
+    if 'filters' in settings:
         words = [w for w in words if does_word_match_filter(w, settings['filters'])]
 
     if settings['type'] == 'macron':
