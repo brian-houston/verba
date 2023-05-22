@@ -50,7 +50,7 @@ class TestNoun(unittest.TestCase):
 
     # test plural only noun
     def test_plural(self):
-        n = word_utils.make_noun(dec='2', gender='m', genitive='liberōrum', special="plural")
+        n = word_utils.make_noun(dec='2', gender='m', genitive='liberōrum', keywords="plural")
         self.assertFalse(n.has_inflection(WK('nom', 's')))
         self.assertTrue(n.has_inflection(WK('nom', 'p')))
         self.assertTrue(n.get_inflection(WK('nom', 'p')) == 'liberī')
@@ -63,12 +63,12 @@ class TestNoun(unittest.TestCase):
         self.assertTrue(WK('nom', 'p') in keys)
 
     def test_i_stem(self):
-        n = word_utils.make_noun(dec='3', gender='n', genitive='animalis', special='i-stem')
+        n = word_utils.make_noun(dec='3', gender='n', genitive='animalis', keywords='i-stem')
         self.assertTrue(n.get_inflection(WK('nom', 'p')) == 'animalia')
         self.assertTrue(n.get_inflection(WK('acc', 'p')) == 'animalia')
         self.assertTrue(n.get_inflection(WK('abl', 's')) == 'animalī')
 
     def test_short_e(self):
-        n = word_utils.make_noun(dec='3', gender='n', genitive='reī', special='short-e')
+        n = word_utils.make_noun(dec='3', gender='n', genitive='reī', keywords='short-e')
         self.assertTrue(n.get_inflection(WK('gen', 's')) == 'reī')
         self.assertTrue(n.get_inflection(WK('dat', 's')) == 'reī')

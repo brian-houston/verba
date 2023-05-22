@@ -6,31 +6,36 @@ from verba.word.word_key import WordKey as WK
 
 class Noun(Word):
     def __init__(self, data):
-        super().__init__('noun', data)
+        super().__init__(data)
 
-        if data['gender'] in definitions.genders:
-            self.gender = data['gender']
+        nominative = data['1']
+        genitive = data['2']
+        gender = data['3']
+
+        if gender in definitions.genders:
+            self.gender = gender 
         else:
-            raise ValueError(f'Provided invalid noun gender')
+            raise ValueError(f'Provided invalid noun gender for noun whose genitive is {genitive}')
 
-        self.special = data['special'].split(',')
-
-        if 'i-stem' in self.special:
+        if 'i-stem' in self.keywords:
             self.category = 'i-stem'
-        elif 'short-e' in self.special:
+        elif 'short-e' in self.keywords:
             self.category = 'short-e'
         else:
             self.category = 'reg'
 
-        self.__init_stem_and_declension(data)
-        self.__init_inflections(data)
+        # the number used in noun's principal parts 
+        self.default_number = 'p' if 'plural' in self.keywords else 's'
 
-    def __init_stem_and_declension(self, data):
-        genitive = data['genitive']
-        number = 'p' if 'plural' in self.special else 's'
+        self.__init_stem_and_declension(genitive)
+        self.__init_inflections(nominative)
+
+    def __init_stem_and_declension(self, genitive):
+        # match genitive to longest ending
+        # needs to be longest because ī and ēī are both genitive endings
         max_ending_len = 0
         for d in definitions.noun_declensions:
-            key = WK(d, self.gender, self.category, 'gen', number)
+            key = WK(d, self.gender, self.category, 'gen', self.default_number)
             if key not in endings.endings['noun']:
                 continue
 
@@ -44,18 +49,15 @@ class Noun(Word):
         if max_ending_len == 0:
             raise ValueError(f'Failed to identify declension for the noun whose genitive is {genitive}')
 
-
-    def __init_inflections(self, data):
-        self.inflections = {}
-
+    def __init_inflections(self, nominative):
         self_key = self.get_key() 
          
         cases = definitions.cases
         numbers = ['s', 'p'] 
 
-        if 'plural' in self.special:
+        if 'plural' in self.keywords:
             numbers = ['p']
-        elif 'singular' in self.special:
+        elif 'singular' in self.keywords:
             numbers = ['s']
 
         products = itertools.product(cases, numbers)
@@ -67,18 +69,18 @@ class Noun(Word):
             ending = endings.endings['noun'][ending_key]
             self.inflections[infl_key] = self.stem + ending
 
-        if 'nominative_singular' in data and data['nominative_singular']:
-            self.inflections[WK('nom', 's')] = data['nominative_singular']
+        # set nominative (usually singular) for nouns with irregular forms (e.g puer, 3rd declension)
+        if nominative:
+            self.inflections[WK('nom', self.default_number)] = nominative 
 
-        if self.gender == 'n' and 'plural' not in self.special:
-            self.inflections[WK('acc', 's')] = self.inflections[WK('nom', 's')] 
+        # set nominative and accusative always the same for neuter nouns
+        if self.gender == 'n':
+            self.inflections[WK('acc', self.default_number)] = self.inflections[WK('nom', self.default_number)] 
 
     def __repr__(self):
-        principal_parts = ''
-        if 'plural' in self.special:
-            principal_parts = f"{self.inflections[WK('nom', 'p')]}, {self.inflections[WK('gen', 'p')]}, {self.gender}"
-        else:
-            principal_parts = f"{self.inflections[WK('nom', 's')]}, {self.inflections[WK('gen', 's')]}, {self.gender}"
+        principal_parts = (f"{self.inflections[WK('nom', self.default_number)]}, "
+                           f"{self.inflections[WK('gen', self.default_number)]}, "
+                           f"{self.gender}")
         return f'Noun: {principal_parts}'
 
     def has_inflection(self, key):
