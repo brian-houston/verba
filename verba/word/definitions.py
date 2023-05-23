@@ -11,7 +11,7 @@ inflections_key_index = {
             }
         }
 
-key_order = ['group', 'category', 'mood', 'tense', 'voice', 'gender', 'case', 'number']
+key_order = ['default', 'group', 'category', 'mood', 'tense', 'voice', 'gender', 'case', 'number']
 
 value_to_attribute = {
             '1': 'group',
@@ -45,5 +45,6 @@ value_to_attribute = {
             'act': 'voice',
             'pass': 'voice',
             'i-stem': 'category',
-            'short-e': 'category'
+            'short-e': 'category',
+            'default': 'default',
         }
