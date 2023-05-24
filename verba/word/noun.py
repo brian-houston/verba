@@ -83,17 +83,5 @@ class Noun(Word):
                            f"{self.gender}")
         return f'Noun: {principal_parts}'
 
-    def has_inflection(self, key):
-        return key in self.inflections
-
-    def get_inflection(self, key):
-        return self.inflections[key]
-
-    def get_inflection_keys(self):
-        return self.inflections.keys()
-
     def get_key(self):
         return WK(self.declension, self.gender, self.category)
-
-    def get_keys_for_inflection(self, inflection):
-        return [k for k, v in self.inflections.items() if v == inflection]

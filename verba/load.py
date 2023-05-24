@@ -2,6 +2,7 @@ import csv
 import itertools
 from importlib.resources import files
 from verba.word.noun import Noun
+from verba.word.other import Other
 from verba.word.word_key import WordKey as WK
 
 def line_product(line):
@@ -37,5 +38,7 @@ def load_words(library_name):
         for line in tsv_file:
             if line['part_of_speech'] == 'noun':
                 words.append(Noun(line))
+            else:
+                words.append(Other(line))
 
     return words
