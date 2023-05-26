@@ -7,6 +7,8 @@ eng_format = 'What {verb} the {attributes} of the word "{word}"?'
 lat_format = ''
 
 def identify_question_generator(words, inflection_keys, attributes):
+    # remove words with attributes to identify
+    words = [w for w in words if w.part_of_speech in attributes]
     for pofs, attr_list in attributes.items():
         n_attr = len(attr_list)
         eng_verb = 'are' if n_attr > 1 else 'is'
