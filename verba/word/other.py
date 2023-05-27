@@ -8,3 +8,6 @@ class Other(Word):
         for i in range(1,5):
             if data[f'pp{i}']:
                 self.inflections[WK('default', str(i))] = data[f'pp{i}']
+
+        if not self.inflections:
+            raise ValueError(f'Failed to construct word because principal parts were empty')

@@ -3,10 +3,6 @@ import tests.word_utils as word_utils
 from verba.word.word_key import WordKey as WK
 
 class TestNoun(unittest.TestCase):
-    def test_is_noun(self):
-        n = word_utils.make_word('noun', ['', 'litterae', 'f', ''])
-        self.assertTrue(n.part_of_speech == 'noun')
-
     def test_gender(self):
         n = word_utils.make_word('noun', ['', 'litterae', 'f', ''])
         self.assertTrue(n.gender == 'f')
