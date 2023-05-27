@@ -6,5 +6,5 @@ class Other(Word):
     def __init__(self, data):
         super().__init__(data)
         for i in range(1,5):
-            if data[str(i)]:
-                self.inflections[WK('default', str(i))] = data[str(i)]
+            if data[f'pp{i}']:
+                self.inflections[WK('default', str(i))] = data[f'pp{i}']

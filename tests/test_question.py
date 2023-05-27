@@ -10,7 +10,7 @@ test_keys = {
 
 class TestQuestion(unittest.TestCase):
     def test_id_question_check_answers(self):
-        n = word_utils.make_noun(genitive='litterae')
+        n = word_utils.make_word('noun', ['', 'litterae', 'f', ''])
         gen = identify_question_generator([n], test_keys, {'noun': ['number', 'case']})
         question = next(gen)
         self.assertTrue(question.check_submissions(['nom']) == 'wrong')
@@ -25,14 +25,14 @@ class TestQuestion(unittest.TestCase):
         self.assertTrue(question.check_submissions(['gen s', 's dat', 'nom p']) == 'correct')
 
     def test_macron_question_check_answers(self):
-        n = word_utils.make_noun(genitive='fēminae')
+        n = word_utils.make_word('noun', ['', 'fēminae', 'f', ''])
         gen = macron_question_generator([n], test_keys)
         question = next(gen)
         self.assertTrue(question.check_submissions(['feminae']) == 'wrong')
         self.assertTrue(question.check_submissions(['fēminae']) == 'correct')
 
     def test_vocab_question_check_answers(self):
-        n = word_utils.make_noun(genitive='fēminae')
+        n = word_utils.make_word('noun', ['', 'fēminae', 'f', ''])
         gen = vocab_question_generator([n], test_keys)
         question = next(gen)
         self.assertTrue(question.check_submissions(['whatever']) == 'continue')

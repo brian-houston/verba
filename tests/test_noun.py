@@ -4,32 +4,28 @@ from verba.word.word_key import WordKey as WK
 
 class TestNoun(unittest.TestCase):
     def test_is_noun(self):
-        n = word_utils.make_noun()
+        n = word_utils.make_word('noun', ['', 'litterae', 'f', ''])
         self.assertTrue(n.part_of_speech == 'noun')
 
-    def test_chapter(self):
-        n = word_utils.make_noun(ch='5')
-        self.assertTrue(n.chapter == 5)
-
     def test_gender(self):
-        n = word_utils.make_noun(gender='m')
-        self.assertTrue(n.gender == 'm')
+        n = word_utils.make_word('noun', ['', 'litterae', 'f', ''])
+        self.assertTrue(n.gender == 'f')
 
     def test_bad_gender(self):
         with self.assertRaises(ValueError):
-            n = word_utils.make_noun(gender='z')
+            n = word_utils.make_word('noun', ['', 'litterae', 'z', ''])
 
     def test_bad_genitive(self):
         with self.assertRaises(ValueError):
-            n = word_utils.make_noun(genitive='mille')
+            n = word_utils.make_word('noun', ['', 'mille', 'f', ''])
         with self.assertRaises(ValueError):
-            n = word_utils.make_noun(genitive='res')
+            n = word_utils.make_word('noun', ['', 'res', 'f', ''])
         with self.assertRaises(ValueError):
-            n = word_utils.make_noun(genitive='rivus')
+            n = word_utils.make_word('noun', ['', 'rivus', 'f', ''])
 
     # test 1st declension endings
     def test_inflections_dec_1(self):
-        n = word_utils.make_noun(dec='1', gender='f', genitive='litterae')
+        n = word_utils.make_word('noun', ['', 'litterae', 'f', ''])
         self.assertTrue(n.has_inflection(WK('nom', 's')))
         self.assertTrue(n.get_inflection(WK('nom', 's')) == 'littera')
         self.assertTrue(n.get_inflection(WK('acc', 's')) == 'litteram')
@@ -44,31 +40,31 @@ class TestNoun(unittest.TestCase):
 
     # test 2nd declension endings with different ending in the nominative singular
     def test_inflections_nom_s(self):
-        n = word_utils.make_noun(dec='2', gender='m', genitive='virī', ns='vir')
+        n = word_utils.make_word('noun', ['vir', 'virī', 'm', ''])
         self.assertTrue(n.has_inflection(WK('nom', 's')))
         self.assertTrue(n.get_inflection(WK('nom', 's')) == 'vir')
 
     # test plural only noun
     def test_plural(self):
-        n = word_utils.make_noun(dec='2', gender='m', genitive='liberōrum', keywords="plural")
+        n = word_utils.make_word('noun', ['', 'liberōrum', 'm', ''], keywords='plural')
         self.assertFalse(n.has_inflection(WK('nom', 's')))
         self.assertTrue(n.has_inflection(WK('nom', 'p')))
         self.assertTrue(n.get_inflection(WK('nom', 'p')) == 'liberī')
 
     def test_inflections_keys(self):
-        n = word_utils.make_noun(dec='1', gender='f', genitive='litterae')
+        n = word_utils.make_word('noun', ['', 'litterae', 'f', ''])
         keys = n.get_keys_for_inflection(n.get_inflection(WK('gen', 's')))
         self.assertTrue(WK('gen', 's') in keys)
         self.assertTrue(WK('dat', 's') in keys)
         self.assertTrue(WK('nom', 'p') in keys)
 
     def test_i_stem(self):
-        n = word_utils.make_noun(dec='3', gender='n', genitive='animalis', keywords='i-stem')
+        n = word_utils.make_word('noun', ['animal', 'animalis', 'n', ''], keywords='i-stem')
         self.assertTrue(n.get_inflection(WK('nom', 'p')) == 'animalia')
         self.assertTrue(n.get_inflection(WK('acc', 'p')) == 'animalia')
         self.assertTrue(n.get_inflection(WK('abl', 's')) == 'animalī')
 
     def test_short_e(self):
-        n = word_utils.make_noun(dec='3', gender='n', genitive='reī', keywords='short-e')
+        n = word_utils.make_word('noun', ['', 'reī', 'f', ''], keywords='short-e')
         self.assertTrue(n.get_inflection(WK('gen', 's')) == 'reī')
         self.assertTrue(n.get_inflection(WK('dat', 's')) == 'reī')

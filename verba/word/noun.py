@@ -8,9 +8,9 @@ class Noun(Word):
     def __init__(self, data):
         super().__init__(data)
 
-        nominative = data['1']
-        genitive = data['2']
-        gender = data['3']
+        nominative = data['pp1']
+        genitive = data['pp2']
+        gender = data['pp3']
 
         if gender in definitions.genders:
             self.gender = gender 

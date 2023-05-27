@@ -1,14 +1,17 @@
 from verba.word.noun import Noun
+import verba.word.make as make
 
-def make_noun(ch='1', dec='1', ns='', genitive='litterae', gender='f', meaning='This is a Latin word', keywords=''):
+def make_word(pofs, pps, ch='1', meaning='', keywords=''):
     data = {
-            'part_of_speech': 'noun',
             'chapter': ch,
-            'declension': dec,
-            '1': ns,
-            '2': genitive,
-            '3': gender,
+            'part_of_speech': pofs,
+            'pp1': pps[0],
+            'pp2': pps[1],
+            'pp3': pps[2],
+            'pp4': pps[3],
             'meaning': meaning,
             'keywords': keywords,
             }
-    return Noun(data)
+
+    return make.make_word(data)
+
