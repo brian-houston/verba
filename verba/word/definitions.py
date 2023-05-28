@@ -44,6 +44,7 @@ value_to_attribute = {
             '3rd': 'person',
             'act': 'voice',
             'pass': 'voice',
+            'reg': 'category',
             'i-stem': 'category',
             'short-e': 'category',
             'default': 'default',
