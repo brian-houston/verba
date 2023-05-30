@@ -15,7 +15,7 @@ class Noun(Word):
         if gender in definitions.genders:
             self.gender = gender 
         else:
-            raise ValueError(f'Provided invalid noun gender for noun whose genitive is {genitive}')
+            Word.raise_error('Bad Gender', data)
 
         if 'i-stem' in self.keywords:
             self.category = 'i-stem'
@@ -47,7 +47,7 @@ class Noun(Word):
                 max_ending_len = ending_len
 
         if max_ending_len == 0:
-            raise ValueError(f'Failed to identify declension for the noun whose genitive is {genitive}')
+            Word.raise_error('Could not identify noun declension', self.data)
 
     def __init_inflections(self, nominative):
         self_key = self.get_key() 
@@ -65,7 +65,7 @@ class Noun(Word):
             infl_key = WK(*prod)
             ending_key = self_key.union(infl_key)
             if ending_key not in endings.endings['noun']:
-                raise ValueError(f"Failed to find ending for {data['genitive']} in {ending_key}")
+                Word.raise_error('Could not find ending:', self.data)
             ending = endings.endings['noun'][ending_key]
             self.inflections[infl_key] = self.stem + ending
 

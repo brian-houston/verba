@@ -2,11 +2,15 @@ from verba.word.word_key import WordKey as WK
 
 class Word:
     def __init__(self, data):
+        self.data = data
         self.part_of_speech = data['part_of_speech']
         self.meaning = data['meaning']
         self.chapter = int(data['chapter'])
         self.keywords = data['keywords'].split()
         self.inflections = {}
+
+    def raise_error(reason, data):
+        raise ValueError(f'{reason}: {data}')
 
     def has_inflection(self, key):
         return key in self.inflections
