@@ -18,11 +18,11 @@ class Noun(Word):
             Word.raise_error('Bad Gender', data)
 
         if 'i-stem' in self.keywords:
-            self.category = 'i-stem'
+            self.subgroup = 'i-stem'
         elif 'short-e' in self.keywords:
-            self.category = 'short-e'
+            self.subgroup = 'short-e'
         else:
-            self.category = 'reg'
+            self.subgroup = 'reg'
 
         # the number used in noun's principal parts 
         self.default_number = 'p' if 'plural' in self.keywords else 's'
@@ -35,7 +35,7 @@ class Noun(Word):
         # needs to be longest because ī and ēī are both genitive endings
         max_ending_len = 0
         for d in definitions.noun_declensions:
-            key = WK(d, self.gender, self.category, 'gen', self.default_number)
+            key = WK(d, self.gender, self.subgroup, 'gen', self.default_number)
             if key not in endings.endings['noun']:
                 continue
 
@@ -65,7 +65,7 @@ class Noun(Word):
             infl_key = WK(*prod)
             ending_key = self_key.union(infl_key)
             if ending_key not in endings.endings['noun']:
-                Word.raise_error('Could not find ending:', self.data)
+                Word.raise_error('Could not find ending', ending_key)
             ending = endings.endings['noun'][ending_key]
             self.inflections[infl_key] = self.stem + ending
 
@@ -84,4 +84,4 @@ class Noun(Word):
         return f'Noun: {principal_parts}'
 
     def get_key(self):
-        return WK(self.declension, self.gender, self.category)
+        return WK(self.declension, self.gender, self.subgroup)

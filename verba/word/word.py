@@ -6,11 +6,11 @@ class Word:
         self.part_of_speech = data['part_of_speech']
         self.meaning = data['meaning']
         self.chapter = int(data['chapter'])
-        self.keywords = data['keywords'].split()
+        self.keywords = set(data['keywords'].split())
         self.inflections = {}
 
-    def raise_error(reason, data):
-        raise ValueError(f'{reason}: {data}')
+    def raise_error(reason, obj):
+        raise ValueError(f'{reason}: {obj}')
 
     def has_inflection(self, key):
         return key in self.inflections
