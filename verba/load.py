@@ -4,6 +4,7 @@ from importlib.resources import files
 from verba.word.noun import Noun
 from verba.word.other import Other
 from verba.word.word_key import WordKey as WK
+from verba.word.make import make_word
 
 def line_product(line):
     line = {k: v.split() for k, v in line.items()}
@@ -36,9 +37,8 @@ def load_words(library_name):
     with files('verba.data').joinpath(library_name).joinpath('words.tsv').open(encoding='utf-16') as file:
         tsv_file = csv.DictReader(file, delimiter='\t')
         for line in tsv_file:
-            if line['part_of_speech'] == 'noun':
-                words.append(Noun(line))
-            else:
-                words.append(Other(line))
+            word = make_word(line)
+            if word:
+                words.append(word)
 
     return words

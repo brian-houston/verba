@@ -1,17 +1,11 @@
 parts_of_speech = ['noun', 'verb', 'adjective']
 genders = ['f', 'm', 'n']
 noun_declensions = ['1', '2', '3', '4', '5']
+adjective_declensions = ['1|2', '3']
 cases = ['nom', 'acc', 'gen', 'dat', 'abl']
 numbers = ['s', 'p']
 
-inflections_key_index = {
-        'noun': {
-                'case': 0,
-                'number': 1,
-            }
-        }
-
-key_order = ['default', 'group', 'category', 'mood', 'tense', 'voice', 'gender', 'case', 'number']
+key_order = ['default', 'group', 'subgroup', 'degree', 'mood', 'tense', 'voice', 'gender', 'case', 'number']
 
 value_to_attribute = {
             '1': 'group',
@@ -20,6 +14,13 @@ value_to_attribute = {
             '3': 'group',
             '4': 'group',
             '5': 'group',
+            'reg': 'subgroup',
+            'i-stem': 'subgroup',
+            'short-e': 'subgroup',
+            'ius': 'subgroup',
+            'pos': 'degree',
+            'comp': 'degree',
+            'super': 'degree',
             'f': 'gender',
             'm': 'gender',
             'n': 'gender',
@@ -44,8 +45,5 @@ value_to_attribute = {
             '3rd': 'person',
             'act': 'voice',
             'pass': 'voice',
-            'reg': 'category',
-            'i-stem': 'category',
-            'short-e': 'category',
             'default': 'default',
         }
