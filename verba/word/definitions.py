@@ -1,7 +1,7 @@
 parts_of_speech = ['noun', 'verb', 'adjective']
 genders = ['f', 'm', 'n']
 noun_declensions = ['1', '2', '3', '4', '5']
-adjective_declensions = ['1|2', '3']
+adjective_declensions = ['1/2', '3']
 cases = ['nom', 'acc', 'gen', 'dat', 'abl']
 numbers = ['s', 'p']
 

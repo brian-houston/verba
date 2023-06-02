@@ -5,9 +5,6 @@ from verba.word.word_key import WordKey as WK
 class Other(Word):
     def __init__(self, data):
         super().__init__(data)
-        for i in range(1,5):
-            if data[f'pp{i}']:
-                self.inflections[WK('default', str(i))] = data[f'pp{i}']
-
-        if not self.inflections:
-            raise ValueError(f'Failed to construct word because principal parts were empty')
+        for i, p in enumerate(self.parts):
+            if p:
+                self.inflections[WK(str(i+1))] = p

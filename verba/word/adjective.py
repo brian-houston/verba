@@ -4,6 +4,35 @@ import verba.word.definitions as definitions
 import verba.word.endings as endings
 from verba.word.word_key import WordKey as WK
 
+"""
+An adjective's principle parts should be given as:
+(masc nom), (fem nom), (neut nom), (genitive).
+For regular adjectives only the feminine nominative is required.
+If the masculine or neuter doesn't follow the regular pattern (e.g pulcher, aliud), it must be provided.
+For one-termination adjectives, the genitive must be provided in the last slot.
+The nominative of one-termination adjectives can just be provided in the first slot and not repeated three times.
+The keyword 'ius' should be given to words like 'nullus' which have 'īus' in the genitive
+
+Examples:
+    1/2, regular 
+    -, bona, -, - 
+
+    1/2, irregular masc nom
+    pulcher, pulchra, -, - 
+
+    1/2, irregular neut nom
+    -, alia, aliud, -
+
+    regular
+    -, brevis, -, -
+
+    3, irregular masc nom
+    acer, acris, -, -
+
+    3, one-termination
+    pars, -, -, partis
+"""
+
 class Adjective(Word):
     def __init__(self, data):
         super().__init__(data)
@@ -18,32 +47,29 @@ class Adjective(Word):
         self.__init_inflections()
 
     def __init_stem_and_declension(self):
-        neuter_part = '' 
-        for i in range(4,0,-1):
-            if self.data[f'pp{i}']:
-                neuter_part = self.data[f'pp{i}']
-                break
+        # check if one-termination 3rd declension adjective
+        # indicated by genitive in last part
+        if self.parts[3][-2:] == 'is':
+            self.declension = '3'
+            self.stem = self.parts[3][:-2]
+            self.keywords.add('one-termination')
+            return
 
+        feminine_part = self.parts[1] 
         max_ending_len = 0
         for d in definitions.adjective_declensions:
-            key = WK(d, self.subgroup, 'pos', 'n' , 'nom', self.default_number)
+            key = WK(d, self.subgroup, 'pos', 'f' , 'nom', self.default_number)
             if key not in endings.endings['adjective']:
                 continue
 
             ending = endings.endings['adjective'][key]
             ending_len = len(ending)
-            if neuter_part[-ending_len:] == ending and ending_len > max_ending_len:
+            if feminine_part[-ending_len:] == ending and ending_len > max_ending_len:
                 self.declension = d
-                self.stem = neuter_part[:-ending_len]
+                self.stem = feminine_part[:-ending_len]
                 max_ending_len = ending_len
 
-        # check if one-termination 3rd declension adjective
-        # indicated by genitive in last part
-        if neuter_part[-2:] == 'is':
-            self.declension = '3'
-            self.stem = neuter_part[:-2]
-            self.keywords.add('one-termination')
-        elif max_ending_len == 0:
+        if max_ending_len == 0:
             Word.raise_error('Could not identify adjective declension', self.data)
 
     def __init_inflections(self):
@@ -68,18 +94,20 @@ class Adjective(Word):
             ending = endings.endings['adjective'][ending_key]
             self.inflections[infl_key] = self.stem + ending
 
-        # set irregular nominate singular 
-        # always for 1st/2nd decl. if it is provided
-        # only if 3 principal parts provided to 3rd decl.
-        if (self.data['pp1'] and self.declension == '1|2' or 
-            self.data['pp3'] and self.declension == '3'):
-            self.inflections[WK('pos', 'm', 'nom', self.default_number)] = self.data['pp1'] 
+        # set irregular nominate singulars
+        if self.parts[0]:
+            self.inflections[WK('pos', 'm', 'nom', self.default_number)] = self.parts[0] 
+        if self.parts[2]:
+            self.inflections[WK('pos', 'n', 'nom', self.default_number)] = self.parts[2] 
+            self.inflections[WK('pos', 'n', 'acc', self.default_number)] = self.parts[2] 
 
-        # nominate singular the same for one-termination adj.
-        if self.data['pp1'] and 'one-termination' in self.keywords:
-            self.inflections[WK('pos', 'f', 'nom', self.default_number)] = self.data['pp1'] 
-            self.inflections[WK('pos', 'm', 'nom', self.default_number)] = self.data['pp1'] 
-            self.inflections[WK('pos', 'n', 'nom', self.default_number)] = self.data['pp1'] 
+        # for one-termination adjectives
+        # set nominatives to first principle part
+        if 'one-termination' in self.keywords and self.parts[0]:
+            self.inflections[WK('pos', 'm', 'nom', self.default_number)] = self.parts[0] 
+            self.inflections[WK('pos', 'f', 'nom', self.default_number)] = self.parts[0] 
+            self.inflections[WK('pos', 'n', 'nom', self.default_number)] = self.parts[0] 
+            self.inflections[WK('pos', 'n', 'acc', self.default_number)] = self.parts[0] 
 
     def __repr__(self):
         principal_parts = ''

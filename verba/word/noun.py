@@ -8,8 +8,8 @@ class Noun(Word):
     def __init__(self, data):
         super().__init__(data)
 
-        if data['pp3'] in definitions.genders:
-            self.gender = self.data['pp3'] 
+        if self.parts[2] in definitions.genders:
+            self.gender = self.parts[2] 
         else:
             Word.raise_error('Bad Gender', data)
 
@@ -29,7 +29,7 @@ class Noun(Word):
     def __init_stem_and_declension(self):
         # match genitive to longest ending
         # needs to be longest because ī and ēī are both genitive endings
-        genitive = self.data['pp2']
+        genitive = self.parts[1] 
         max_ending_len = 0
         for d in definitions.noun_declensions:
             key = WK(d, self.gender, self.subgroup, 'gen', self.default_number)
@@ -67,10 +67,10 @@ class Noun(Word):
             self.inflections[infl_key] = self.stem + ending
 
         # set nominative (usually singular) for nouns with irregular forms (e.g puer, 3rd declension)
-        if self.data['pp1']:
-            self.inflections[WK('nom', self.default_number)] = self.data['pp1'] 
+        if self.parts[0]:
+            self.inflections[WK('nom', self.default_number)] = self.parts[0] 
 
-        # set nominative and accusative always the same for neuter nouns
+        # nominative and accusative always the same for neuter 
         if self.gender == 'n':
             self.inflections[WK('acc', self.default_number)] = self.inflections[WK('nom', self.default_number)] 
 

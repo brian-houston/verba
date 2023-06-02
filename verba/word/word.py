@@ -4,9 +4,10 @@ class Word:
     def __init__(self, data):
         self.data = data
         self.part_of_speech = data['part_of_speech']
-        self.meaning = data['meaning']
         self.chapter = int(data['chapter'])
+        self.parts = [data['pp1'], data['pp2'], data['pp3'], data['pp4']]
         self.keywords = set(data['keywords'].split())
+        self.meaning = data['meaning']
         self.inflections = {}
 
     def raise_error(reason, obj):
