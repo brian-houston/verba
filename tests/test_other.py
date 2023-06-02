@@ -15,4 +15,4 @@ class TestOther(unittest.TestCase):
     def test_blanks(self):
         n = word_utils.make_word('conjunction', ['ā', '', '', 'ab'])
         self.assertTrue(n.get_inflection(WK('1')) == 'ā')
-        self.assertTrue(n.get_inflection(WK('4')) == 'ab')
+        self.assertFalse(n.has_inflection(WK('4')))

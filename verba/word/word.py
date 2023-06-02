@@ -10,8 +10,15 @@ class Word:
         self.meaning = data['meaning']
         self.inflections = {}
 
-    def raise_error(reason, obj):
+    def _raise_error(reason, obj):
         raise ValueError(f'{reason}: {obj}')
+
+    def _set_parts_as_inflections(self):
+        for i, p in enumerate(self.parts):
+            if p:
+                self.inflections[WK(str(i+1))] = p
+            else:
+                break
 
     def has_inflection(self, key):
         return key in self.inflections

@@ -43,10 +43,10 @@ class Adjective(Word):
         if 'ius' in self.keywords:
             self.subgroup = 'ius'
 
-        self.__init_stem_and_declension()
-        self.__init_inflections()
+        self._init_stem_and_declension()
+        self._init_inflections()
 
-    def __init_stem_and_declension(self):
+    def _init_stem_and_declension(self):
         # check if one-termination 3rd declension adjective
         # indicated by genitive in last part
         if self.parts[3][-2:] == 'is':
@@ -70,9 +70,9 @@ class Adjective(Word):
                 max_ending_len = ending_len
 
         if max_ending_len == 0:
-            Word.raise_error('Could not identify adjective declension', self.data)
+            Word._raise_error('Could not identify adjective declension', self.data)
 
-    def __init_inflections(self):
+    def _init_inflections(self):
         self_key = self.get_key() 
          
         cases = definitions.cases
@@ -90,7 +90,7 @@ class Adjective(Word):
             infl_key = WK(*prod)
             ending_key = self_key.union(infl_key)
             if ending_key not in endings.endings['adjective']:
-                Word.raise_error('Could not find ending:', ending_key)
+                Word._raise_error('Could not find ending:', ending_key)
             ending = endings.endings['adjective'][ending_key]
             self.inflections[infl_key] = self.stem + ending
 

@@ -7,11 +7,15 @@ from verba.word.word_key import WordKey as WK
 class Noun(Word):
     def __init__(self, data):
         super().__init__(data)
+        if 'indeclinable' in self.keywords:
+            self._set_parts_as_inflections()
+            self.part_of_speech = 'noun-indeclinable'
+            return
 
         if self.parts[2] in definitions.genders:
             self.gender = self.parts[2] 
         else:
-            Word.raise_error('Bad Gender', data)
+            Word._raise_error('Bad Gender', data)
 
         if 'i-stem' in self.keywords:
             self.subgroup = 'i-stem'
@@ -23,10 +27,10 @@ class Noun(Word):
         # the number used in noun's principal parts 
         self.default_number = 'p' if 'plural' in self.keywords else 's'
 
-        self.__init_stem_and_declension()
-        self.__init_inflections()
+        self._init_stem_and_declension()
+        self._init_inflections()
 
-    def __init_stem_and_declension(self):
+    def _init_stem_and_declension(self):
         # match genitive to longest ending
         # needs to be longest because ī and ēī are both genitive endings
         genitive = self.parts[1] 
@@ -44,9 +48,9 @@ class Noun(Word):
                 max_ending_len = ending_len
 
         if max_ending_len == 0:
-            Word.raise_error('Could not identify noun declension', self.data)
+            Word._raise_error('Could not identify noun declension', self.data)
 
-    def __init_inflections(self):
+    def _init_inflections(self):
         self_key = self.get_key() 
          
         cases = definitions.cases
@@ -62,7 +66,7 @@ class Noun(Word):
             infl_key = WK(*prod)
             ending_key = self_key.union(infl_key)
             if ending_key not in endings.endings['noun']:
-                Word.raise_error('Could not find ending', ending_key)
+                Word._raise_error('Could not find ending', ending_key)
             ending = endings.endings['noun'][ending_key]
             self.inflections[infl_key] = self.stem + ending
 
