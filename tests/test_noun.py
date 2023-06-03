@@ -65,7 +65,6 @@ class TestNoun(unittest.TestCase):
         self.assertTrue(n.get_inflection(WK('gen', 's')) == 'reī')
         self.assertTrue(n.get_inflection(WK('dat', 's')) == 'reī')
 
-    def test_indeclinable(self):
-        n = word_utils.make_word('noun', ['nihil', '', '', ''], keywords='indeclinable')
+    def test_invariable(self):
+        n = word_utils.make_word('noun', ['nihil', '', '', ''], keywords='invariable')
         self.assertTrue(n.get_inflection(WK('1')) == 'nihil')
-        self.assertTrue(n.part_of_speech == 'noun-indeclinable')

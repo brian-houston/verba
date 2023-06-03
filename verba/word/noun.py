@@ -7,11 +7,11 @@ from verba.word.word_key import WordKey as WK
 class Noun(Word):
     def __init__(self, data):
         super().__init__(data)
-        if 'indeclinable' in self.keywords:
+        if 'invariable' in self.keywords:
             self._set_parts_as_inflections()
-            self.part_of_speech = 'noun-indeclinable'
             return
 
+        self.is_inflected = True
         if self.parts[2] in definitions.genders:
             self.gender = self.parts[2] 
         else:
@@ -29,6 +29,8 @@ class Noun(Word):
 
         self._init_stem_and_declension()
         self._init_inflections()
+
+        self.parts[0] = self.inflections[WK('nom', self.default_number)]
 
     def _init_stem_and_declension(self):
         # match genitive to longest ending
@@ -77,12 +79,6 @@ class Noun(Word):
         # nominative and accusative always the same for neuter 
         if self.gender == 'n':
             self.inflections[WK('acc', self.default_number)] = self.inflections[WK('nom', self.default_number)] 
-
-    def __repr__(self):
-        principal_parts = (f"{self.inflections[WK('nom', self.default_number)]}, "
-                           f"{self.inflections[WK('gen', self.default_number)]}, "
-                           f"{self.gender}")
-        return f'Noun: {principal_parts}'
 
     def get_key(self):
         return WK(self.declension, self.gender, self.subgroup)

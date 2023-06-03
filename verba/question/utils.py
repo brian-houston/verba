@@ -1,7 +1,7 @@
 import random
 
 # factor a word's weight is multiplied by if it is chosen
-falloff = 0.33
+falloff = 0.01
 
 def inflection_generator(words, inflection_keys):
     fails = 0
@@ -18,10 +18,10 @@ def inflection_generator(words, inflection_keys):
         pofs = word.part_of_speech
 
         possible_inflection_keys = None
-        if pofs not in inflection_keys:
-            possible_inflection_keys = word.get_inflection_keys()
-        else:
+        if word.is_inflected and pofs in inflection_keys:
             possible_inflection_keys = set(inflection_keys[pofs]).intersection(word.get_inflection_keys())
+        else:
+            possible_inflection_keys = word.get_inflection_keys()
         possible_inflection_keys = list(possible_inflection_keys)
 
         if not possible_inflection_keys:

@@ -4,6 +4,7 @@ class Word:
     def __init__(self, data):
         self.data = data
         self.part_of_speech = data['part_of_speech']
+        self.is_inflected = False
         self.chapter = int(data['chapter'])
         self.parts = [data['pp1'], data['pp2'], data['pp3'], data['pp4']]
         self.keywords = set(data['keywords'].split())
@@ -34,3 +35,8 @@ class Word:
 
     def get_key(self):
         return WK()
+
+    def __repr__(self):
+        parts_str = ', '.join([p for p in self.parts if p])
+        return f'{self.part_of_speech}: {parts_str}'
+

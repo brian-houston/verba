@@ -37,6 +37,7 @@ class Adjective(Word):
     def __init__(self, data):
         super().__init__(data)
 
+        self.is_inflected = True
         self.default_number = 'p' if 'plural' in self.keywords else 's'
 
         self.subgroup = 'reg'
@@ -45,6 +46,10 @@ class Adjective(Word):
 
         self._init_stem_and_declension()
         self._init_inflections()
+
+        self.parts[0] = self.inflections[WK('pos', 'm', 'nom', self.default_number)]
+        self.parts[1] = self.inflections[WK('pos', 'f', 'nom', self.default_number)]
+        self.parts[2] = self.inflections[WK('pos', 'n', 'nom', self.default_number)]
 
     def _init_stem_and_declension(self):
         # check if one-termination 3rd declension adjective
@@ -108,10 +113,6 @@ class Adjective(Word):
             self.inflections[WK('pos', 'f', 'nom', self.default_number)] = self.parts[0] 
             self.inflections[WK('pos', 'n', 'nom', self.default_number)] = self.parts[0] 
             self.inflections[WK('pos', 'n', 'acc', self.default_number)] = self.parts[0] 
-
-    def __repr__(self):
-        principal_parts = ''
-        return f'Adjective: {principal_parts}'
 
     def get_key(self):
         return WK(self.declension, self.subgroup)

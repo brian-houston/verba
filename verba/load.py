@@ -25,10 +25,6 @@ def load_keys(library_name):
                            if k != 'chapter' and k != 'part_of_speech']) 
                 keys[pofs].append((chapter, key))
 
-    # add default key for words that don't decline
-    for pofs in keys.keys():
-        keys[pofs].append((0, WK('default')))
-
     return keys
 
 def load_words(library_name):
