@@ -35,6 +35,6 @@ class TestQuestion(unittest.TestCase):
         n = word_utils.make_word('noun', ['', 'fēminae', 'f', ''])
         gen = vocab_question_generator([n], test_keys)
         question = next(gen)
-        self.assertTrue(question.check_submissions(['whatever']) == 'continue')
+        self.assertTrue(question.check_submissions(['whatever']) == 'answer')
         self.assertTrue(question.check_submissions(['whatever']) == 'wrong')
         self.assertTrue(question.check_submissions(['c']) == 'correct')

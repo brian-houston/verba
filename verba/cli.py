@@ -23,8 +23,8 @@ def answer_question(question):
         if response == 'partial':
             console.print('[bold yellow]Partially Correct.')
             continue
-        if response == 'continue':
-            console.print(f'The answer is "{question.get_answers_text()}". Input "c" if you were correct and anything else otherwise.')
+        if response == 'answer':
+            console.print(f'Answer: "{question.get_answers_text()}"')
 
 def main():
     keys = load_keys('LL')
