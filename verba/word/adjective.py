@@ -1,7 +1,8 @@
-import itertools
+import itertools 
 from verba.word.word import Word 
 import verba.word.definitions as definitions
 import verba.word.endings as endings
+import verba.word.utils as utils
 from verba.word.word_key import WordKey as WK
 
 """
@@ -38,44 +39,32 @@ class Adjective(Word):
         super().__init__(data)
 
         self.is_inflected = True
-        self.default_number = 'p' if 'plural' in self.keywords else 's'
+        self.subgroup = utils.identify_subgroup(self.keywords, definitions.adjective_subgroups)
 
-        self.subgroup = 'reg'
-        if 'ius' in self.keywords:
-            self.subgroup = 'ius'
+        partial_keys = [
+                WK('pos', 'f', 'reg', 's', 'nom'),
+                WK('pos', 'f', 'reg', 'p', 'nom'),
+                ]
 
-        self._init_stem_and_declension()
+        (key, self.stem) = utils.identify_key_and_stem(
+                self.parts[1], partial_keys, 'adjective', definitions.adjective_declensions)
+
+        if self.parts[3][-2:] == 'is':
+            self.declension = '3'
+            self.stem = self.parts[3][:-2]
+            self.default_number = 's'
+            self.keywords.add('one-termination')
+        elif not key:
+            Word._raise_error('Could not identify adjective declension', self.data)
+        else:
+            self.declension = key['group']
+            self.default_number = key['number']
+
         self._init_inflections()
 
         self.parts[0] = self.inflections[WK('pos', 'm', 'nom', self.default_number)]
         self.parts[1] = self.inflections[WK('pos', 'f', 'nom', self.default_number)]
         self.parts[2] = self.inflections[WK('pos', 'n', 'nom', self.default_number)]
-
-    def _init_stem_and_declension(self):
-        # check if one-termination 3rd declension adjective
-        # indicated by genitive in last part
-        if self.parts[3][-2:] == 'is':
-            self.declension = '3'
-            self.stem = self.parts[3][:-2]
-            self.keywords.add('one-termination')
-            return
-
-        feminine_part = self.parts[1] 
-        max_ending_len = 0
-        for d in definitions.adjective_declensions:
-            key = WK(d, self.subgroup, 'pos', 'f' , 'nom', self.default_number)
-            if key not in endings.endings['adjective']:
-                continue
-
-            ending = endings.endings['adjective'][key]
-            ending_len = len(ending)
-            if feminine_part[-ending_len:] == ending and ending_len > max_ending_len:
-                self.declension = d
-                self.stem = feminine_part[:-ending_len]
-                max_ending_len = ending_len
-
-        if max_ending_len == 0:
-            Word._raise_error('Could not identify adjective declension', self.data)
 
     def _init_inflections(self):
         self_key = self.get_key() 
@@ -83,12 +72,7 @@ class Adjective(Word):
         cases = definitions.cases
         genders = definitions.genders
         degrees = ['pos']
-        numbers = ['s', 'p'] 
-
-        if 'plural' in self.keywords:
-            numbers = ['p']
-        elif 'singular' in self.keywords:
-            numbers = ['s']
+        numbers = list(set([self.default_number, 'p'])) 
 
         products = itertools.product(cases, degrees, numbers, genders)
         for prod in products:

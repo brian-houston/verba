@@ -2,6 +2,7 @@ import itertools
 from verba.word.word import Word 
 import verba.word.definitions as definitions
 import verba.word.endings as endings
+import verba.word.utils as utils
 from verba.word.word_key import WordKey as WK
 
 class Noun(Word):
@@ -12,56 +13,39 @@ class Noun(Word):
             return
 
         self.is_inflected = True
-        if self.parts[2] in definitions.genders:
-            self.gender = self.parts[2] 
-        else:
-            Word._raise_error('Bad Gender', data)
+        self.gender = self.parts[2] 
+        if self.parts[2] not in definitions.genders:
+            Word._raise_error('Invalid gender', data)
 
-        if 'i-stem' in self.keywords:
-            self.subgroup = 'i-stem'
-        elif 'short-e' in self.keywords:
-            self.subgroup = 'short-e'
-        else:
-            self.subgroup = 'reg'
+        partial_keys = [
+                WK(self.gender, 'reg', 's', 'gen'),
+                WK(self.gender, 'reg', 'p', 'gen'),
+                WK(self.gender, 'short-e', 's', 'gen'),
+                WK(self.gender, 'i-stem', 'p', 'gen'),
+                ]
 
-        # the number used in noun's principal parts 
-        self.default_number = 'p' if 'plural' in self.keywords else 's'
+        (key, self.stem) = utils.identify_key_and_stem(
+                self.parts[1], partial_keys, 'noun', definitions.noun_declensions)
 
-        self._init_stem_and_declension()
+        if not key:
+            Word._raise_error('Could not identify noun declension', self.data)
+
+        self.declension = key['group']
+        self.subgroup = key['subgroup']
+        self.default_number = key['number']
+
+        if self.subgroup == 'reg':
+            self.subgroup = utils.identify_subgroup(self.keywords, definitions.noun_subgroups)
+
         self._init_inflections()
 
         self.parts[0] = self.inflections[WK('nom', self.default_number)]
-
-    def _init_stem_and_declension(self):
-        # match genitive to longest ending
-        # needs to be longest because ī and ēī are both genitive endings
-        genitive = self.parts[1] 
-        max_ending_len = 0
-        for d in definitions.noun_declensions:
-            key = WK(d, self.gender, self.subgroup, 'gen', self.default_number)
-            if key not in endings.endings['noun']:
-                continue
-
-            ending = endings.endings['noun'][key]
-            ending_len = len(ending)
-            if genitive[-ending_len:] == ending and ending_len > max_ending_len:
-                self.declension = d
-                self.stem = genitive[:-ending_len]
-                max_ending_len = ending_len
-
-        if max_ending_len == 0:
-            Word._raise_error('Could not identify noun declension', self.data)
 
     def _init_inflections(self):
         self_key = self.get_key() 
          
         cases = definitions.cases
-        numbers = ['s', 'p'] 
-
-        if 'plural' in self.keywords:
-            numbers = ['p']
-        elif 'singular' in self.keywords:
-            numbers = ['s']
+        numbers = list(set([self.default_number, 'p'])) 
 
         products = itertools.product(cases, numbers)
         for prod in products:

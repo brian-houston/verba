@@ -42,7 +42,7 @@ class TestNoun(unittest.TestCase):
 
     # test plural only noun
     def test_plural(self):
-        n = word_utils.make_word('noun', ['', 'liberōrum', 'm', ''], keywords='plural')
+        n = word_utils.make_word('noun', ['', 'liberōrum', 'm', ''])
         self.assertFalse(n.has_inflection(WK('nom', 's')))
         self.assertTrue(n.has_inflection(WK('nom', 'p')))
         self.assertTrue(n.get_inflection(WK('nom', 'p')) == 'liberī')
@@ -61,7 +61,7 @@ class TestNoun(unittest.TestCase):
         self.assertTrue(n.get_inflection(WK('abl', 's')) == 'animalī')
 
     def test_short_e(self):
-        n = word_utils.make_word('noun', ['', 'reī', 'f', ''], keywords='short-e')
+        n = word_utils.make_word('noun', ['', 'reī', 'f', ''])
         self.assertTrue(n.get_inflection(WK('gen', 's')) == 'reī')
         self.assertTrue(n.get_inflection(WK('dat', 's')) == 'reī')
 

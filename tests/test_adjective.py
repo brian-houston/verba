@@ -19,18 +19,16 @@ class TestNoun(unittest.TestCase):
         self.assertTrue(n.declension == '3')
 
     def test_irregular_masculine(self):
-        n = word_utils.make_word('adjective', ['pulcher', 'pulchera', 'pulcherum', ''])
+        n = word_utils.make_word('adjective', ['pulcher', 'pulchra', 'pulchrum', ''])
         self.assertTrue(n.get_inflection(WK('pos', 'm', 'nom', 's')) == 'pulcher')
 
         n = word_utils.make_word('adjective', ['ācer', 'ācris', 'ācre', ''])
         self.assertTrue(n.get_inflection(WK('pos', 'm', 'nom', 's')) == 'ācer')
 
-    def test_irregular_masculine(self):
-        n = word_utils.make_word('adjective', ['pulcher', 'pulchera', 'pulcherum', ''])
-        self.assertTrue(n.get_inflection(WK('pos', 'm', 'nom', 's')) == 'pulcher')
-
-        n = word_utils.make_word('adjective', ['ācer', 'ācris', 'ācre', ''])
-        self.assertTrue(n.get_inflection(WK('pos', 'm', 'nom', 's')) == 'ācer')
+    def test_plural(self):
+        n = word_utils.make_word('adjective', ['', 'pulchrae', '', ''])
+        self.assertFalse(n.has_inflection(WK('pos', 'm', 'nom', 's')))
+        self.assertTrue(n.get_inflection(WK('pos', 'f', 'nom', 'p')) == 'pulchrae')
 
     def test_irregular_neuter(self):
         n = word_utils.make_word('adjective', ['alius', 'alia', 'aliud', ''])
