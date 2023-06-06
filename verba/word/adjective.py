@@ -67,21 +67,9 @@ class Adjective(Word):
         self.parts[2] = self.inflections[WK('pos', 'n', 'nom', self.default_number)]
 
     def _init_inflections(self):
-        self_key = self.get_key() 
-         
-        cases = definitions.cases
-        genders = definitions.genders
-        degrees = ['pos']
         numbers = list(set([self.default_number, 'p'])) 
-
-        products = itertools.product(cases, degrees, numbers, genders)
-        for prod in products:
-            infl_key = WK(*prod)
-            ending_key = self_key.union(infl_key)
-            if ending_key not in endings.endings['adjective']:
-                Word._raise_error('Could not find ending:', ending_key)
-            ending = endings.endings['adjective'][ending_key]
-            self.inflections[infl_key] = self.stem + ending
+        keys = utils.make_key_products(definitions.degrees, definitions.genders, definitions.cases, numbers)
+        self.inflections |= utils.make_inflections(self.stem, 'adjective', keys, self.get_key())
 
         # set irregular nominate singulars
         if self.parts[0]:

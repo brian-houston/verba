@@ -7,6 +7,7 @@ class Word:
         self.is_inflected = False
         self.chapter = int(data['chapter'])
         self.parts = [data['pp1'], data['pp2'], data['pp3'], data['pp4']]
+        self.parts = [p.strip() for p in self.parts]
         self.keywords = set(data['keywords'].split())
         self.meaning = data['meaning']
         self.inflections = {}

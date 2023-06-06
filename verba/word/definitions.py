@@ -8,7 +8,7 @@ def add_values(values, attribute):
         value_to_attribute[v] = attribute
 
 noun_declensions = ['1', '2', '3', '4', '5']
-verb_conjugations = ['1', '2', '3', '4']
+verb_conjugations = ['1', '2', '3', '4', 'na']
 adjective_declensions = ['1/2', '3']
 genders = ['f', 'm', 'n']
 noun_subgroups = ['reg', 'i-stem', 'short-e']

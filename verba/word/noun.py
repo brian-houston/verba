@@ -42,19 +42,9 @@ class Noun(Word):
         self.parts[0] = self.inflections[WK('nom', self.default_number)]
 
     def _init_inflections(self):
-        self_key = self.get_key() 
-         
-        cases = definitions.cases
         numbers = list(set([self.default_number, 'p'])) 
-
-        products = itertools.product(cases, numbers)
-        for prod in products:
-            infl_key = WK(*prod)
-            ending_key = self_key.union(infl_key)
-            if ending_key not in endings.endings['noun']:
-                Word._raise_error('Could not find ending', ending_key)
-            ending = endings.endings['noun'][ending_key]
-            self.inflections[infl_key] = self.stem + ending
+        keys = utils.make_key_products(definitions.cases, numbers)
+        self.inflections |= utils.make_inflections(self.stem, 'noun', keys, self.get_key())
 
         # set nominative (usually singular) for nouns with irregular forms (e.g puer, 3rd declension)
         if self.parts[0]:

@@ -1,3 +1,4 @@
+import itertools
 import verba.word.endings as endings
 from verba.word.word_key import WordKey as WK
 
@@ -25,3 +26,21 @@ def identify_key_and_stem(word, partial_keys, pofs, groups):
                 max_ending_len = ending_len
     
     return (key_match, stem)
+
+def make_inflections(stem, pofs, inflection_keys, self_key):
+    if pofs not in endings.endings:
+        return {}
+
+    inflections = {}
+    for k in inflection_keys:
+        ending_key = self_key.union(k)
+        if ending_key not in endings.endings[pofs]:
+            continue
+        inflections[k] = stem + endings.endings[pofs][ending_key] 
+    return inflections
+
+def make_key_products(*args):
+    prods = itertools.product(*args)
+    keys = [WK(*p) for p in prods]
+    return keys
+    
