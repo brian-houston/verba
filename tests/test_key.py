@@ -46,3 +46,20 @@ class TestKey(unittest.TestCase):
         key1 = WK('s', 'nom', 'f', '1')
         key2 = WK('s')
         self.assertTrue(key1.filter(['number']) == key2)
+
+    def test_contains(self):
+        key1 = WK('s', 'nom', 'f', '1')
+        key2 = WK()
+        self.assertTrue(key1.contains(key2) == True)
+
+        key1 = WK('s', 'nom', 'f', '1')
+        key2 = WK('s', 'nom')
+        self.assertTrue(key1.contains(key2) == True)
+
+        key1 = WK('s', 'nom')
+        key2 = WK('s', 'nom', 'f', '1')
+        self.assertTrue(key1.contains(key2) == False)
+
+        key1 = WK('s', 'nom')
+        key2 = WK('p')
+        self.assertTrue(key1.contains(key2) == False)
