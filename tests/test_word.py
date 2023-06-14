@@ -21,3 +21,36 @@ class TestWord(unittest.TestCase):
         self.assertTrue('test2' in n.keywords)
         self.assertTrue('test3' in n.keywords)
 
+    def test_apply_keywords(self):
+        n = word_utils.make_word('other', ['test', '', '', ''])
+        n.inflections = {
+                WK('pass', 's', '1st'): 'test1',
+                WK('pass', 'p', '1st'): 'test1',
+                WK('pass', 's', '2nd'): 'test1',
+                WK('pass', 'p', '2nd'): 'test1',
+                WK('act', 's', '1st'): 'test1',
+                WK('act', 'p', '1st'): 'test1',
+                WK('act', 's', '2nd'): 'test1',
+                WK('act', 'p', '2nd'): 'test1',
+                }
+        
+        n.keywords = set(['del-pass'])
+        for k,v in n.apply_keywords().items():
+            self.assertTrue(k.contains(WK('act')))
+
+        n.keywords = set(['delnot-pass-1st'])
+        for k,v in n.apply_keywords().items():
+            self.assertTrue(k.contains(WK('pass', '1st')))
+
+        n.keywords = set(['add-pass-s-1st', 'del-pass'])
+        inflections = n.apply_keywords()
+        self.assertTrue(WK('pass', 's', '1st') in inflections)
+        self.assertFalse(WK('pass', 'p', '1st') in inflections)
+
+        n.keywords = set(['addnot-pass-s-1st', 'del-pass'])
+        inflections = n.apply_keywords()
+        self.assertFalse(WK('pass', 's', '1st') in inflections)
+        self.assertTrue(WK('pass', 'p', '1st') in inflections)
+
+        n.keywords = set(['del-'])
+        self.assertFalse(n.apply_keywords())

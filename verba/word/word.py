@@ -37,6 +37,39 @@ class Word:
     def get_key(self):
         return WK()
 
+    """
+    Apply certain keywords to filter a word's inflections
+    Returns the filtered dictionary of inflections
+
+    del-[WK]: delete all inflections whose keys contain WK
+    delnot-[WK]: delete all inflections whose keys do not contain WK
+
+    add-[WK]: add all inflections whose keys contain WK
+    addnot-[WK]: add all inflections whose keys do not contain WK
+
+    The 'add' keywords do nothing if nothing has been deleted.
+    All inflections can be deleted with 'del-'
+    """
+    def apply_keywords(self):
+        del_inflections = self.inflections
+        add_inflections = {} 
+        for kw in self.keywords:
+            if kw.startswith('del-'):
+                key = WK(*kw[4:].split('-'))
+                del_inflections = {k:v for k, v in del_inflections.items() if not k.contains(key)}
+            if kw.startswith('delnot-'):
+                key = WK(*kw[7:].split('-'))
+                del_inflections = {k:v for k, v in del_inflections.items() if k.contains(key)}
+
+            if kw.startswith('add-'):
+                key = WK(*kw[4:].split('-'))
+                add_inflections |= {k:v for k, v in self.inflections.items() if k.contains(key)}
+            if kw.startswith('addnot-'):
+                key = WK(*kw[7:].split('-'))
+                add_inflections |= {k:v for k, v in self.inflections.items() if not k.contains(key)}
+
+        return del_inflections | add_inflections
+
     def __repr__(self):
         parts_str = ', '.join([p for p in self.parts if p])
         return f'{self.part_of_speech}: {parts_str}'
