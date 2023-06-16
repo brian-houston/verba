@@ -49,13 +49,20 @@ class Verb(Word):
 
         self._init_present_stem_and_conjugation()
 
-        if 'deponent' in self.keywords or 'semi-deponent' in self.keywords:
-            self.supine_stem = self.parts[2][:-6] # remove 'us sum'
-        else:
-            self.perfect_stem = self.parts[2][:-1] # remove 'ī'
+        if self.parts[2][-1:] == 'ī':
+            self.perfect_stem = self.parts[2][:-1]
+        elif self.parts[2][-4:] == 'isse':
+            self.perfect_stem = self.parts[2][:-4]
 
-        if not self.supine_stem:
-            self.supine_stem = self.parts[3][:-2] # remove 'us'
+        self.supine_stem = self.parts[3][:-2] # remove 'um'
+
+        if self.conjugation == '3' and (self.parts[0][-2:] == 'iō' or self.parts[0][-3:] == 'ior'):
+            self.subgroup = 'i-stem'
+
+        if self.parts[1][-1:] == 'ī':
+            self.keywords.add('deponent')
+        elif not self.perfect_stem and self.supine_stem:
+            self.keywords.add('semi-deponent')
 
         self.keywords.add(self.subgroup)
         self.keywords.add(self.conjugation)
@@ -82,14 +89,6 @@ class Verb(Word):
             Word._raise_error('Could not identify verb conjugation', self.data)
         
         self.conjugation = key['group']
-
-        if self.conjugation == '3' and (self.parts[0][-2:] == 'iō' or self.parts[0][-3:] == 'ior'):
-            self.subgroup = 'i-stem'
-
-        if key['voice'] == 'pass':
-            self.keywords.add('deponent')
-        elif self.parts[2][-6:] == 'us sum':
-            self.keywords.add('semi-deponent')
 
     def _init_present_inflections(self):
         if not self.present_stem:

@@ -26,14 +26,14 @@ class TestVerb(unittest.TestCase):
         self.assertTrue(n.supine_stem == 'amat')
 
     def test_stems_deponent(self):
-        n = word_utils.make_word('verb', ['', 'loquī', 'locūtus sum', ''])
+        n = word_utils.make_word('verb', ['', 'loquī', '', 'locūtum'])
         self.assertTrue('deponent' in n.keywords)
         self.assertTrue(n.present_stem == 'loqu')
         self.assertTrue(n.perfect_stem == '')
         self.assertTrue(n.supine_stem == 'locūt')
 
     def test_stems_deponent_i_stem(self):
-        n = word_utils.make_word('verb', ['patior', 'patī', 'passus sum', ''])
+        n = word_utils.make_word('verb', ['patior', 'patī', '', 'passum'])
         self.assertTrue('deponent' in n.keywords)
         self.assertTrue('i-stem' in n.keywords)
         self.assertTrue(n.present_stem == 'pat')
@@ -41,12 +41,13 @@ class TestVerb(unittest.TestCase):
         self.assertTrue(n.supine_stem == 'pass')
 
     def test_deponent_inflections(self):
-        n = word_utils.make_word('verb', ['patior', 'patī', 'passus sum', ''])
+        n = word_utils.make_word('verb', ['patior', 'patī', '', 'passum'])
         for infl in n.inflections.keys():
             self.assertTrue(infl['voice'] == 'act')
 
-    def test_no_passive(self):
-        n = word_utils.make_word('verb', ['', 'valēre', 'valuī sum', 'valitum'], keywords="no-passive")
-        for infl in n.inflections.keys():
-            self.assertTrue(infl['voice'] == 'act')
-
+    def test_semi_deponent(self):
+        n = word_utils.make_word('verb', ['', 'gaudēre', '', 'gāvīsum'])
+        self.assertTrue('semi-deponent' in n.keywords)
+        self.assertTrue(n.present_stem == 'gaud')
+        self.assertTrue(n.perfect_stem == '')
+        self.assertTrue(n.supine_stem == 'gāvīs')
