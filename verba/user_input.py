@@ -11,9 +11,9 @@ long_vowels = long_lower_vowels + long_upper_vowels
 # converts chars in char list to lowercase equivalents
 # preserves macrons
 # returns list of chars
-def lower_latin(char_list):
-    return [c.lower() if c not in long_upper_vowels else long_lower_vowels[long_upper_vowels.index(c)]
-            for c in char_list]
+def lower_latin(str):
+    return ''.join([c.lower() if c not in long_upper_vowels else long_lower_vowels[long_upper_vowels.index(c)]
+            for c in list(str)])
 
 def demacronify(str):
     char_list = list(str)
@@ -52,9 +52,9 @@ def read_latin_input():
                 vowel = short_vowels[long_vowels.index(char_list[-1])]
                 print('\b' + vowel, end='', flush=True)
                 char_list[-1] = vowel 
-        elif c.isalpha() or c == ',':
+        elif c.isprintable():
             print(c, end='', flush=True)
             char_list += c
 
-    return ''.join(lower_latin(char_list))
+    return lower_latin(''.join(char_list))
 

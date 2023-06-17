@@ -1,5 +1,5 @@
 from verba.question.question import Question
-from verba.input import demacronify
+import verba.user_input as user_input
 import verba.question.utils as utils
 
 def macron_question_generator(words, inflection_keys, filters=None):
@@ -7,17 +7,17 @@ def macron_question_generator(words, inflection_keys, filters=None):
         inflection = word.get_inflection(key)
 
         answers = set()
-        answers.add(inflection)
+        answers.add(user_input.lower_latin(inflection))
 
         checker = make_checker(answers)
-        yield Question(f'Macron: "{demacronify(inflection)}"', '', checker, answers, meaning=word.meaning)
+        yield Question(f'Macron: "{user_input.demacronify(inflection)}"', '', checker, answers, meaning=word.meaning)
 
 def make_checker(answers):
     def checker(submissions):
         if len(submissions) != 1:
             return 'wrong'
 
-        if submissions[0] in answers:
+        if user_input.lower_latin(submissions[0]) in answers:
             return 'correct'
         
         return 'wrong'

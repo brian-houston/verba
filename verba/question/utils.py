@@ -5,13 +5,20 @@ falloff = 0.01
 
 def inflection_generator(words, inflection_keys):
     fails = 0
-    weights = [1 for _ in words]
+    successes = 0
     n_words = len(words)
+
+    weights = [1 for _ in words]
+    weights_init = [1 for _ in words]
     while True:
         # stop if all weights are zero
         # or words is empty
         if fails == n_words:
             return StopIteration()
+
+        if successes + fails == n_words:
+            weights = weights_init.copy()
+            successes = 0
 
         i = random.choices(range(n_words), weights=weights)[0]
         word = words[i]
@@ -27,9 +34,12 @@ def inflection_generator(words, inflection_keys):
         if not possible_inflection_keys:
             fails += 1
             weights[i] = 0 
+            weights_init[i] = 0
             continue
 
-        weights[i] *= falloff 
+        weights[i] = 0
+        successes += 1
         selected_key = random.choice(possible_inflection_keys)
 
         yield (word, selected_key)
+    return StopIteration()

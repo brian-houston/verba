@@ -1,5 +1,5 @@
 from verba.load import load_words, load_keys
-from verba.input import read_latin_input
+from verba.user_input import read_latin_input
 from verba.word.word_key import WordKey as WK
 from verba.console import console
 from verba.generator_setup import select_generator_settings, create_generator
@@ -18,7 +18,7 @@ def answer_question(question):
             console.print('[bold green]Correct!')
             return
         if response == 'wrong':
-            console.print('[bold red]Wrong.')
+            console.print(f'[bold red]Wrong.[/] Answer: "{question.get_answers_text()}"')
             return
         if response == 'partial':
             console.print('[bold yellow]Partially Correct.')
@@ -34,6 +34,7 @@ def main():
 
     for question in generator:
         answer_question(question)
+        console.rule("")
 
 if __name__ == '__main__':
     main()
