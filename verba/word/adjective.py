@@ -66,6 +66,9 @@ class Adjective(Word):
         self.parts[1] = self.inflections[WK('pos', 'f', 'nom', self.default_number)]
         self.parts[2] = self.inflections[WK('pos', 'n', 'nom', self.default_number)]
 
+        self.keywords.add(self.declension)
+        self.keywords.add(self.subgroup)
+
     def _init_inflections(self):
         numbers = list(set([self.default_number, 'p'])) 
         keys = utils.make_key_products(definitions.degrees, definitions.genders, definitions.cases, numbers)

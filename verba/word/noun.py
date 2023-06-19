@@ -40,6 +40,10 @@ class Noun(Word):
         self._init_inflections()
 
         self.parts[0] = self.inflections[WK('nom', self.default_number)]
+        
+        self.keywords.add(self.declension)
+        self.keywords.add(self.subgroup)
+        self.keywords.add(self.gender)
 
     def _init_inflections(self):
         numbers = list(set([self.default_number, 'p'])) 

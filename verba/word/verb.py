@@ -49,6 +49,7 @@ class Verb(Word):
 
         self._init_present_stem_and_conjugation()
 
+        # perfect stem can be given as 1st singular or infinitive
         if self.parts[2][-1:] == 'ī':
             self.perfect_stem = self.parts[2][:-1]
         elif self.parts[2][-4:] == 'isse':
@@ -67,10 +68,19 @@ class Verb(Word):
         self.keywords.add(self.subgroup)
         self.keywords.add(self.conjugation)
 
+        self._init_supine_inflections()
+
+        if 'semi-deponent' in self.keywords:
+            self.inflections = {WK('act').union(k): v for k, v in self.inflections.items()}
+
+        self._init_perfect_inflections()
         self._init_present_inflections()
 
         if 'deponent' in self.keywords:
             self.inflections = {WK('act').union(k): v for k, v in self.inflections.items()}
+
+        self.keywords.add(self.conjugation)
+        self.keywords.add(self.subgroup)
 
     def _init_present_stem_and_conjugation(self):
         if not self.parts[1]:
@@ -104,6 +114,12 @@ class Verb(Word):
             keys += [key1.union(key2) for key2 in person_number_keys]
 
         self.inflections |= utils.make_inflections(self.present_stem, 'verb', keys, self.get_key())
+
+    def _init_perfect_inflections(self):
+        pass
+
+    def _init_supine_inflections(self):
+        pass
 
     def get_key(self):
         return WK(self.conjugation, self.subgroup)
