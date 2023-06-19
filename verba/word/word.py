@@ -12,6 +12,8 @@ class Word:
         self.meaning = data['meaning']
         self.inflections = {}
 
+        self.keywords.add(self.part_of_speech)
+
     def _raise_error(reason, obj):
         raise ValueError(f'{reason}: {obj}')
 
@@ -69,6 +71,12 @@ class Word:
                 add_inflections |= {k:v for k, v in self.inflections.items() if not k.contains(key)}
 
         return del_inflections | add_inflections
+
+    def match_keywords(self, filter):
+        for kw in filter:
+            if kw not in self.keywords:
+                return False
+        return True
 
     def __repr__(self):
         parts_str = ', '.join([p for p in self.parts if p])

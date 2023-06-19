@@ -19,17 +19,11 @@ class TestKey(unittest.TestCase):
         self.assertTrue(translate_setting_input('chapters', '1-4, a') == None)
 
     def test_translate_filters(self):
-        self.assertTrue(translate_setting_input('filters', '') == {})
-        self.assertTrue(translate_setting_input('filters', 'noun') == {'noun': ['all']})
-        self.assertTrue(translate_setting_input('filters', 'noun, verb') == {'noun': ['all'], 'verb': ['all']})
-        self.assertTrue(translate_setting_input('filters', 'noun: 3 plural') == 
-                        {'noun': ['3', 'plural']})
-        self.assertTrue(translate_setting_input('filters', 'noun: 3 plural, verb') == 
-                        {'noun': ['3', 'plural'], 'verb': ['all']})
-        self.assertTrue(translate_setting_input('filters', 'noun: 3 plural, verb: deponent 2') == 
-                        {'noun': ['3', 'plural'], 'verb': ['deponent', '2']})
-        self.assertTrue(translate_setting_input('filters', '     noun: 3 plural,verb:deponent   2') == 
-                        {'noun': ['3', 'plural'], 'verb': ['deponent', '2']})
+        self.assertTrue(translate_setting_input('filters', '') == [[]]) 
+        self.assertTrue(translate_setting_input('filters', 'noun') == [['noun']])
+        self.assertTrue(translate_setting_input('filters', 'noun, verb') == [['noun'], ['verb']])
+        self.assertTrue(translate_setting_input('filters', 'noun 3 plural') == [['noun', '3', 'plural']])
+        self.assertTrue(translate_setting_input('filters', 'noun 3 plural, verb deponent 2') == [['noun', '3', 'plural'], ['verb', 'deponent', '2']])
 
     def test_translate_attributes(self):
         self.assertTrue(translate_setting_input('attributes', '') == None)

@@ -42,18 +42,8 @@ def translate_setting_input(setting, input):
     if setting == 'filters':
         try:
             input = input.strip()
-            if not input:
-                return {}
-            filters = {}
-            for s in input.split(','):
-                s = s.strip()
-                if ':' not in s:
-                    filters[s] = ['all'] 
-                    continue
-                parts = s.split(':')
-                part_of_speech = parts[0]
-                keywords = parts[1].split()
-                filters[part_of_speech] = keywords if keywords else ['all']
+            filters = input.split(',')
+            filters = [s.split() for s in filters]
             return filters
         except:
             return None
@@ -72,7 +62,7 @@ def translate_setting_input(setting, input):
         except:
             return None
 
-    return "Nothing"
+    return None 
 
 def select_generator_settings():
     question_type = ''
@@ -94,8 +84,11 @@ def select_generator_settings():
 
     return settings
 
-def does_word_match_filter(word, filter):
-    return True
+def does_word_match_filters(word, filters):
+    for f in filters:
+        if word.match_keywords(f):
+            return True
+    return False
 
 def create_generator(settings, words, keys):
     if 'level' in settings:
@@ -106,7 +99,7 @@ def create_generator(settings, words, keys):
     if 'chapters' in settings:
         words = [w for w in words if w.chapter in settings['chapters']]
     if 'filters' in settings:
-        words = [w for w in words if does_word_match_filter(w, settings['filters'])]
+        words = [w for w in words if does_word_match_filters(w, settings['filters'])]
 
     if settings['type'] == 'macron':
         return macron_question_generator(words, keys)
