@@ -41,6 +41,8 @@ def read_latin_input():
         elif c == '-':
             # do nothing if no characters entered
             if not char_list:
+                print(c, end='', flush=True)
+                char_list += c
                 continue
 
             # toggle macron 

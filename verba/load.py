@@ -33,6 +33,7 @@ def load_words(library_name):
     with files('verba.data').joinpath(library_name).joinpath('words.tsv').open(encoding='utf-16') as file:
         tsv_file = csv.DictReader(file, delimiter='\t')
         for line in tsv_file:
+            line = {k: v.strip() for k, v in line.items()}
             word = make_word(line)
             if word:
                 words.append(word)

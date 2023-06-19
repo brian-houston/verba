@@ -5,9 +5,8 @@ class Word:
         self.data = data
         self.part_of_speech = data['part_of_speech']
         self.is_inflected = False
-        self.chapter = int(data['chapter'])
+        self.chapter = data['chapter']
         self.parts = [data['pp1'], data['pp2'], data['pp3'], data['pp4']]
-        self.parts = [p.strip() for p in self.parts]
         self.keywords = set(data['keywords'].split())
         self.meaning = data['meaning']
         self.inflections = {}

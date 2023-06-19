@@ -22,20 +22,20 @@ question_types_setting_list = {
 def translate_setting_input(setting, input):
     if setting == 'level':
         try:
-            return max(1, int(input))
+            return int(input) 
         except:
             return None
     if setting == 'chapters':
         try:
             chapters = set()
             for s in input.replace(',', ' ').split():
-                digits = s.split('-')
-                if len(digits) == 1:
-                    chapters.add(int(digits[0]))
-                elif len(digits) == 2:
-                    start = int(digits[0])
-                    end = int(digits[1]) + 1
-                    chapters.update(range(start, end))
+                parts = s.split('-')
+                if len(parts) == 1:
+                    chapters.add(parts[0])
+                elif len(parts) == 2:
+                    start = int(parts[0])
+                    end = int(parts[1]) + 1
+                    chapters.update([str(x) for x in range(start, end)])
             return chapters if chapters else None
         except:
             return None
@@ -93,11 +93,13 @@ def does_word_match_filters(word, filters):
 def create_generator(settings, words, keys):
     if 'level' in settings:
         new_keys = {}
-        for pofs, list_v in keys.items():
-            new_keys[pofs] = [key for chapter, key in list_v if chapter <= settings['level']]
+        if settings['level'] > 0:
+            for pofs, list_v in keys.items():
+                new_keys[pofs] = [key for chapter, key in list_v if chapter <= settings['level']]
         keys = new_keys
     if 'chapters' in settings:
-        words = [w for w in words if w.chapter in settings['chapters']]
+        if '0' not in settings['chapters']:
+            words = [w for w in words if w.chapter in settings['chapters']]
     if 'filters' in settings:
         words = [w for w in words if does_word_match_filters(w, settings['filters'])]
 

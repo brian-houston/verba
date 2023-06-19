@@ -5,18 +5,18 @@ class TestKey(unittest.TestCase):
     def test_translate_level(self):
         self.assertTrue(translate_setting_input('level', '3') == 3)
         self.assertTrue(translate_setting_input('level', 'a') == None)
-        self.assertTrue(translate_setting_input('level', '-1') == 1)
+        self.assertTrue(translate_setting_input('level', '-1') == -1)
 
     def test_translate_chapters(self):
-        self.assertTrue(translate_setting_input('chapters', '1') == set([1]))
-        self.assertTrue(translate_setting_input('chapters', '1 2') == set([1, 2]))
-        self.assertTrue(translate_setting_input('chapters', '1,2') == set([1, 2]))
-        self.assertTrue(translate_setting_input('chapters', '1 ,  2') == set([1, 2]))
-        self.assertTrue(translate_setting_input('chapters', '1-4') == set([1, 2, 3, 4]))
-        self.assertTrue(translate_setting_input('chapters', '1-4,1, 5 9') == set([1, 2, 3, 4, 5, 9]))
+        self.assertTrue(translate_setting_input('chapters', '1') == set(['1']))
+        self.assertTrue(translate_setting_input('chapters', '1 2') == set(['1', '2']))
+        self.assertTrue(translate_setting_input('chapters', '1,2') == set(['1', '2']))
+        self.assertTrue(translate_setting_input('chapters', '1 ,  2') == set(['1', '2']))
+        self.assertTrue(translate_setting_input('chapters', '1-4') == set(['1', '2', '3', '4']))
+        self.assertTrue(translate_setting_input('chapters', '1-4,1, 5 hello') == set(['1', '2', '3', '4', '5', 'hello']))
         self.assertTrue(translate_setting_input('chapters', '') == None)
-        self.assertTrue(translate_setting_input('chapters', 'a') == None)
-        self.assertTrue(translate_setting_input('chapters', '1-4, a') == None)
+        self.assertTrue(translate_setting_input('chapters', 'a') == set(['a']))
+        self.assertTrue(translate_setting_input('chapters', 'a-5') == None)
 
     def test_translate_filters(self):
         self.assertTrue(translate_setting_input('filters', '') == [[]]) 
