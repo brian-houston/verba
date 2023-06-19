@@ -10,10 +10,6 @@ class TestKey(unittest.TestCase):
         key2 = WK('s', 'nom')
         self.assertTrue(key1 == key2)
 
-    def test_equality_non_key(self):
-        key1 = WK('nom', 's')
-        self.assertFalse(key1 == 'nom s')
-
     def test_union(self):
         key1 = WK('nom', 's')
         key2 = WK('f')

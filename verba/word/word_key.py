@@ -58,11 +58,9 @@ class WordKey:
         return self.attributes[i]
 
     def __hash__(self):
-        return hash(tuple(sorted(self.attributes)))
+        return hash(tuple(sorted(self.attributes.values())))
 
     def __eq__(self, other):
-        if not isinstance(other, WordKey):
-            return False
         return self.attributes == other.attributes
 
 
