@@ -44,6 +44,7 @@ class Noun(Word):
         self.keywords.add(self.declension)
         self.keywords.add(self.subgroup)
         self.keywords.add(self.gender)
+        self.inflections = self.apply_keywords()
 
     def _init_inflections(self):
         numbers = list(set([self.default_number, 'p'])) 

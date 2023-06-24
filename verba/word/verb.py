@@ -81,6 +81,7 @@ class Verb(Word):
 
         self.keywords.add(self.conjugation)
         self.keywords.add(self.subgroup)
+        self.inflections = self.apply_keywords()
 
     def _init_present_stem_and_conjugation(self):
         if not self.parts[1]:
@@ -108,8 +109,6 @@ class Verb(Word):
         keys = []
         for key1 in present_stem_keys: 
             if 'deponent' in self.keywords and key1['voice'] == 'act':
-                continue
-            if 'no-passive' in self.keywords and key1['voice'] == 'pass':
                 continue
             keys += [key1.union(key2) for key2 in person_number_keys]
 
