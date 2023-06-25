@@ -15,12 +15,12 @@ class Question:
 
     def get_meaning_text(self):
         if self.meaning:
-            return f'Meaning: "{self.meaning}"'
+            return f'Def: "{self.meaning}"'
         return 'No definition hint'
 
     def get_pofs_text(self):
         if self.pofs:
-            return f'Part of speech: "{self.pofs}"'
+            return f'PofS: "{self.pofs}"'
         return 'No part of speech hint'
 
     def get_key_text(self):
