@@ -4,11 +4,11 @@ from verba.question.macron import macron_question_generator
 from verba.question.identify import identify_question_generator 
 
 setting_ask_user_text = {
-        'level': "Up to what chapter's level of grammer do you want to practice? ",
-        'chapters': "What chapters' vocabulary lists do you want to practice? ",
-        'attributes': "What attributes do you want to identify? ",
-        'match': "What parts of speech do you want to match? ",
-        'filters': "How do you want to filter the words selected? ",
+        'level': "Level: ",
+        'chapters': "Chapters: ",
+        'attributes': "Attributes: ",
+        'match': "Match: ",
+        'filters': "Filters: ",
         }
 
 question_types_setting_list = {
@@ -67,10 +67,10 @@ def translate_setting_input(setting, input):
 def select_generator_settings():
     question_type = ''
     while True:
-        question_type = input('What type of question do you want to practice? ')
+        question_type = input('Question Type: ')
         if question_type in question_types_setting_list:
             break
-        console.print("What you entered is not valid, so let's try again.")
+        console.print('Invalid')
 
     settings = {}
     settings['type'] = question_type
@@ -80,7 +80,7 @@ def select_generator_settings():
             if value != None:
                 settings[setting_name] = value
                 break
-            console.print("What you entered is not valid, so let's try again.")
+            console.print('Invalid')
 
     return settings
 
