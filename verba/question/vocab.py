@@ -9,7 +9,8 @@ def vocab_question_generator(words, inflection_keys, filters=None):
         answers.add(word.meaning)
 
         checker = make_checker(answers)
-        yield Question(f'Vocab: "{inflection}"', '', checker, answers, meaning="No Cheating!")
+        yield Question(f'Vocab: "{inflection}"', checker, answers, 
+                       meaning="No cheating!", pofs=word.part_of_speech, key=str(key))
 
 def make_checker(answers):
     first_input = True

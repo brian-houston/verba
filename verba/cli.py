@@ -8,11 +8,23 @@ def answer_question(question):
     console.print(question.get_question_text(), style='verba.question')
     while True:
         submission = read_latin_input() 
+        if submission == 'all':
+            console.print(question.get_pofs_text())
+            console.print(question.get_key_text())
+            console.print(question.get_meaning_text())
+            continue
+        if submission == 'pofs':
+            console.print(question.get_pofs_text())
+            continue
+        if submission == 'key':
+            console.print(question.get_key_text())
+            continue
         if submission == 'def':
             console.print(question.get_meaning_text())
             continue
-        elif submission == 'x':
+        if submission == 'x':
             raise SystemExit(0)
+
         response = question.check_submissions(submission.split(','))
         if response == 'correct':
             console.print('[bold green]Correct!')

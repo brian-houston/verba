@@ -10,7 +10,8 @@ def macron_question_generator(words, inflection_keys, filters=None):
         answers.add(user_input.lower_latin(inflection))
 
         checker = make_checker(answers)
-        yield Question(f'Macron: "{user_input.demacronify(inflection)}"', '', checker, answers, meaning=word.meaning)
+        yield Question(f'Macron: "{user_input.demacronify(inflection)}"', checker, answers, 
+                       meaning=word.meaning, pofs=word.part_of_speech, key=str(key))
 
 def make_checker(answers):
     def checker(submissions):
