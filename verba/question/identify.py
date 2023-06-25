@@ -16,7 +16,7 @@ def identify_question_generator(words, inflection_keys, attributes):
             answers.add(key.union(word.get_key()).filter(attributes[pofs]))
 
         checker = make_checker(answers)
-        yield Question(f'Identify: "{inflection}"', '', checker, answers, meaning=word.meaning)
+        yield Question(f'Identify: "{inflection}"', '', checker, [str(x) for x in answers], meaning=word.meaning)
     
 def make_checker(answers):
     def checker(submissions):
