@@ -1,7 +1,5 @@
-import itertools 
 from verba.word.word import Word 
 import verba.word.definitions as definitions
-import verba.word.endings as endings
 import verba.word.utils as utils
 from verba.word.word_key import WordKey as WK
 
@@ -55,7 +53,7 @@ class Adjective(Word):
             self.default_number = 's'
             self.keywords.add('one-termination')
         elif not key:
-            Word._raise_error('Could not identify adjective declension', self.data)
+            self._raise_error('Could not identify adjective declension', self.data)
         else:
             self.declension = key['group']
             self.default_number = key['number']

@@ -2,7 +2,7 @@ from verba.question.question import Question
 import verba.user_input as user_input
 import verba.question.utils as utils
 
-def macron_question_generator(words, inflection_keys, filters=None):
+def macron_question_generator(words, inflection_keys):
     for word, key in utils.inflection_generator(words, inflection_keys):
         inflection = word.get_inflection(key)
 

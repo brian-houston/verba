@@ -1,5 +1,4 @@
 from verba.word.word import Word 
-from verba.word.word_key import WordKey as WK
 
 # for words that aren't inflected (e.g. prepositions)
 class Other(Word):

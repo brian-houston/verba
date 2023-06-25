@@ -45,8 +45,11 @@ class WordKey:
         return self.filter(other.attributes.keys()) == other
 
     def __repr__(self):
-        attributes = [x for x in self.attributes.items() if x[0] in definitions.key_order]
-        pairs = sorted(self.attributes.items(), key=lambda x: definitions.key_order.index(x[0]))
+        def keyFunc(x):
+            if x[0] in definitions.key_order:
+                return definitions.key_order.index(x[0])
+            return -1
+        pairs = sorted(self.attributes.items(), key=keyFunc)
         values = [x[1] for x in pairs]
         values_str = ', '.join(values)
         return f'({values_str})'

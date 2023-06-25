@@ -1,7 +1,5 @@
-import itertools
 from verba.word.word import Word 
 import verba.word.definitions as definitions
-import verba.word.endings as endings
 import verba.word.utils as utils
 from verba.word.word_key import WordKey as WK
 
@@ -15,7 +13,7 @@ class Noun(Word):
         self.is_inflected = True
         self.gender = self.parts[2] 
         if self.parts[2] not in definitions.genders:
-            Word._raise_error('Invalid gender', data)
+            self._raise_error('Invalid gender', data)
 
         partial_keys = [
                 WK(self.gender, 'reg', 's', 'gen'),
@@ -28,7 +26,8 @@ class Noun(Word):
                 self.parts[1], partial_keys, 'noun', definitions.noun_declensions)
 
         if not key:
-            Word._raise_error('Could not identify noun declension', self.data)
+            self._raise_error('Could not identify noun declension', self.data)
+            return
 
         self.declension = key['group']
         self.subgroup = key['subgroup']

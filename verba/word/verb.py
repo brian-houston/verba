@@ -1,7 +1,5 @@
-import itertools
 from verba.word.word import Word 
 import verba.word.definitions as definitions
-import verba.word.endings as endings
 import verba.word.utils as utils
 from verba.word.word_key import WordKey as WK
 
@@ -97,7 +95,8 @@ class Verb(Word):
                 self.parts[1], partial_keys, 'infinitive', definitions.verb_conjugations)
 
         if not key:
-            Word._raise_error('Could not identify verb conjugation', self.data)
+            self._raise_error('Could not identify verb conjugation', self.data)
+            return
         
         self.conjugation = key['group']
 

@@ -1,5 +1,4 @@
 from verba.question.question import Question
-import verba.word.definitions as definitions
 from verba.word.word_key import WordKey as WK
 import verba.question.utils as utils
 

@@ -13,7 +13,7 @@ class Word:
 
         self.keywords.add(self.part_of_speech)
 
-    def _raise_error(reason, obj):
+    def _raise_error(self, reason, obj):
         raise ValueError(f'{reason}: {obj}')
 
     def _set_parts_as_inflections(self):

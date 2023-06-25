@@ -42,4 +42,3 @@ def inflection_generator(words, inflection_keys):
         selected_key = random.choice(possible_inflection_keys)
 
         yield (word, selected_key)
-    return StopIteration()

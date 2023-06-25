@@ -1,8 +1,6 @@
 import csv
 import itertools
 from importlib.resources import files
-from verba.word.noun import Noun
-from verba.word.other import Other
 from verba.word.word_key import WordKey as WK
 from verba.word.make import make_word
 

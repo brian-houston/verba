@@ -1,18 +1,18 @@
 from verba.question.question import Question
 import verba.question.utils as utils
 
-def vocab_question_generator(words, inflection_keys, filters=None):
+def vocab_question_generator(words, inflection_keys):
     for word, key in utils.inflection_generator(words, inflection_keys):
         inflection = word.get_inflection(key)
 
         answers = set()
         answers.add(word.meaning)
 
-        checker = make_checker(answers)
+        checker = make_checker()
         yield Question(f'Vocab: "{inflection}"', checker, answers, 
                        meaning="No cheating!", pofs=word.part_of_speech, key=str(key))
 
-def make_checker(answers):
+def make_checker():
     first_input = True
     def checker(submissions):
         nonlocal first_input
