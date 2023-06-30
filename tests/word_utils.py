@@ -1,4 +1,3 @@
-from verba.word.noun import Noun
 import verba.word.make as make
 
 def make_word(pofs, pps, ch='1', meaning='', keywords=''):

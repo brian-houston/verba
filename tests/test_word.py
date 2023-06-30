@@ -9,9 +9,11 @@ class TestWord(unittest.TestCase):
     
     def test_chapter(self):
         n = word_utils.make_word('noun', ['', 'litterae', 'f', ''], ch='5')
-        self.assertTrue(n.chapter == 5)
+        self.assertTrue(n.chapter == '5')
+        n = word_utils.make_word('noun', ['', 'litterae', 'f', ''], ch='hello')
+        self.assertTrue(n.chapter == 'hello')
 
-    def test_chapter(self):
+    def test_meaning(self):
         n = word_utils.make_word('noun', ['', 'litterae', 'f', ''], meaning='letter')
         self.assertTrue(n.meaning == 'letter')
 
