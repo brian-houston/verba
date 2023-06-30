@@ -36,11 +36,17 @@ class Verb(Word):
     def __init__(self, data):
         super().__init__(data)
 
-        self.is_inflected = True
-        self.subgroup = 'reg'
+        self.conjugation = ''
+        self.subgroup = ''
         self.present_stem = ''
         self.perfect_stem = ''
         self.supine_stem = ''
+
+        if 'invariable' in self.keywords:
+            self._set_parts_as_inflections()
+            return
+
+        self.is_inflected = True
 
         if 'irregular' in self.keywords:
             return
@@ -55,6 +61,7 @@ class Verb(Word):
 
         self.supine_stem = self.parts[3][:-2] # remove 'um'
 
+        self.subgroup = 'reg'
         if self.conjugation == '3' and (self.parts[0][-2:] == 'iō' or self.parts[0][-3:] == 'ior'):
             self.subgroup = 'i-stem'
 

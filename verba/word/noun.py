@@ -5,12 +5,19 @@ from verba.word.word_key import WordKey as WK
 
 class Noun(Word):
     def __init__(self, data):
+        self.declension = ''
+        self.subgroup = ''
+        self.gender = ''
         super().__init__(data)
+
         if 'invariable' in self.keywords:
             self._set_parts_as_inflections()
             return
 
         self.is_inflected = True
+        if 'irregular' in self.keywords:
+            return
+
         self.gender = self.parts[2] 
         if self.parts[2] not in definitions.genders:
             self._raise_error('Invalid gender', data)

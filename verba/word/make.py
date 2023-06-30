@@ -5,7 +5,7 @@ from verba.word.other import Other
 
 def make_word(data):
     if 'part_of_speech' not in data:
-        return None
+        data['part_of_speech'] = 'unknown'
     if data['part_of_speech'] == 'noun':
         return Noun(data)
     if data['part_of_speech'] == 'adjective':

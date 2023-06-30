@@ -8,7 +8,7 @@ def add_values(values, attribute):
         value_to_attribute[v] = attribute
 
 noun_declensions = ['1', '2', '3', '4', '5']
-verb_conjugations = ['1', '2', '3', '4', 'na']
+verb_conjugations = ['1', '2', '3', '4']
 adjective_declensions = ['1/2', '3']
 genders = ['f', 'm', 'n']
 noun_subgroups = ['reg', 'i-stem', 'short-e']
@@ -26,6 +26,7 @@ key_order = ['group', 'subgroup', 'degree', 'mood', 'tense', 'voice', 'person', 
 add_values(noun_declensions, 'group')
 add_values(verb_conjugations, 'group')
 add_values(adjective_declensions, 'group')
+add_values(['na'], 'group')
 add_values(noun_subgroups, 'subgroup')
 add_values(adjective_subgroups, 'subgroup')
 add_values(genders, 'gender')

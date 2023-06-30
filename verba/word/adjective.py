@@ -34,9 +34,18 @@ Examples:
 
 class Adjective(Word):
     def __init__(self, data):
+        self.declension = ''
+        self.subgroup = ''
         super().__init__(data)
 
+        if 'invariable' in self.keywords:
+            self._set_parts_as_inflections()
+            return
+
         self.is_inflected = True
+        if 'irregular' in self.keywords:
+            return
+
         self.subgroup = utils.identify_subgroup(self.keywords, definitions.adjective_subgroups)
 
         partial_keys = [
