@@ -12,7 +12,7 @@ test_keys = {
 class TestQuestion(unittest.TestCase):
     def test_id_question_check_answers(self):
         n = word_utils.make_word('noun', ['', 'litterae', 'f', ''])
-        gen = identify_question_generator([n], test_keys, {'noun': ['number', 'case']})
+        gen = identify_question_generator([n], test_keys, 'noun', ['number', 'case'])
         question = next(gen)
         self.assertTrue(question.check_submissions(['nom']) == 'wrong')
         self.assertTrue(question.check_submissions(['p']) == 'wrong')
@@ -21,7 +21,7 @@ class TestQuestion(unittest.TestCase):
         self.assertTrue(question.check_submissions(['s dat']) == 'partial')
         self.assertTrue(question.check_submissions(['gen s']) == 'correct')
 
-        gen = identify_question_generator([n], test_keys, {'noun': ['number', 'case']})
+        gen = identify_question_generator([n], test_keys, 'noun', ['number', 'case'])
         question = next(gen)
         self.assertTrue(question.check_submissions(['gen s', 's dat', 'nom p']) == 'correct')
 

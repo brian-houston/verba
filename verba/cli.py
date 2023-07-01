@@ -1,7 +1,7 @@
 from verba.load import load_words, load_keys
 from verba.user_input import read_latin_input
 from verba.console import console
-from verba.generator_setup import select_generator_settings, create_generator
+from verba.setup import select_generator_settings, create_generator
 
 def answer_question(question):
     console.print(question.get_question_text(), style='verba.question')

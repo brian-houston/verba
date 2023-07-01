@@ -1,5 +1,5 @@
 import unittest
-from verba.generator_setup import translate_setting_input
+from verba.setup import translate_setting_input
 
 class TestKey(unittest.TestCase):
     def test_translate_level(self):
@@ -27,12 +27,10 @@ class TestKey(unittest.TestCase):
 
     def test_translate_attributes(self):
         self.assertTrue(translate_setting_input('attributes', '') == None)
-        self.assertTrue(translate_setting_input('attributes', 'noun') == None)
-        self.assertTrue(translate_setting_input('attributes', 'noun:') == None)
-        self.assertTrue(translate_setting_input('attributes', 'noun: case') == {'noun': ['case']})
-        self.assertTrue(translate_setting_input('attributes', 'noun: case number') == {'noun': ['case', 'number']})
-        self.assertTrue(translate_setting_input('attributes', 'noun: case number, verb: tense person') == 
-                        {'noun': ['case', 'number'], 'verb': ['tense', 'person']})
-        self.assertTrue(translate_setting_input('attributes', ' noun: case number,verb:tense   person  ') == 
-                        {'noun': ['case', 'number'], 'verb': ['tense', 'person']})
+        self.assertTrue(translate_setting_input('attributes', 'case') == set(['case']))
+        self.assertTrue(translate_setting_input('attributes', 'case number, gender') == set(['case', 'number', 'gender']))
 
+    def test_translate_pofs(self):
+        self.assertTrue(translate_setting_input('pofs', '') == None)
+        self.assertTrue(translate_setting_input('pofs', 'noun') == 'noun')
+        self.assertTrue(translate_setting_input('pofs', 'noun, verb') == None)
