@@ -121,10 +121,30 @@ class Verb(Word):
         self.inflections |= utils.make_inflections(self.present_stem, 'verb', keys, self.get_key())
 
     def _init_perfect_inflections(self):
-        pass
+        if not self.perfect_stem:
+            return
+
+        person_number_keys = utils.make_key_products(definitions.persons, definitions.numbers) 
+        keys = []
+        for key1 in perfect_stem_keys: 
+            if 'deponent' in self.keywords and key1['voice'] == 'act':
+                continue
+            keys += [key1.union(key2) for key2 in person_number_keys]
+
+        self.inflections |= utils.make_inflections(self.perfect_stem, 'verb', keys, self.get_key())
 
     def _init_supine_inflections(self):
-        pass
+        if not self.supine_stem:
+            return
+
+        person_number_keys = utils.make_key_products(definitions.persons, definitions.numbers) 
+        keys = []
+        for key1 in supine_stem_keys: 
+            if 'deponent' in self.keywords and key1['voice'] == 'act':
+                continue
+            keys += [key1.union(key2) for key2 in person_number_keys]
+
+        self.inflections |= utils.make_inflections(self.supine_stem, 'verb', keys, self.get_key())
 
     def get_key(self):
         return WK(self.conjugation, self.subgroup)
