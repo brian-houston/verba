@@ -17,11 +17,11 @@ def load_keys(library_name):
         for line in tsv_file:
             chapter = int(line['chapter'])
             pofs = line['part_of_speech']
-            keys.setdefault(pofs, [])
+            keys.setdefault(pofs, set())
             for lp in line_product(line):
                 key = WK(*[v for k,v in lp.items() 
                            if k != 'chapter' and k != 'part_of_speech']) 
-                keys[pofs].append((chapter, key))
+                keys[pofs].add((chapter, key))
 
     return keys
 

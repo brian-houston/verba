@@ -26,7 +26,7 @@ def inflection_generator(words, inflection_keys):
 
         possible_inflection_keys = None
         if word.is_inflected and pofs in inflection_keys:
-            possible_inflection_keys = set(inflection_keys[pofs]).intersection(word.get_inflection_keys())
+            possible_inflection_keys = inflection_keys[pofs].intersection(word.get_inflection_keys())
         else:
             possible_inflection_keys = word.get_inflection_keys()
         possible_inflection_keys = list(possible_inflection_keys)

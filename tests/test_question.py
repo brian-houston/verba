@@ -6,11 +6,11 @@ from verba.question.utils import inflection_generator
 import tests.word_utils as word_utils
 from verba.word.word_key import WordKey as WK
 test_keys = {
-        'noun': [WK('nom', 'p'), WK('gen', 's'), WK('dat', 's')]
+        'noun': set([WK('nom', 'p'), WK('gen', 's'), WK('dat', 's')])
         }
 
 test_key = {
-        'noun': [WK('nom', 'p')]
+        'noun': set([WK('nom', 'p')])
         }
 
 class TestQuestion(unittest.TestCase):

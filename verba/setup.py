@@ -95,7 +95,7 @@ def create_generator(settings, words, keys):
     if 'level' in settings:
         new_keys = {}
         for pofs, list_v in keys.items():
-            new_keys[pofs] = [key for chapter, key in list_v if chapter <= settings['level']]
+            new_keys[pofs] = {key for chapter, key in list_v if chapter <= settings['level']}
         keys = new_keys
     else:
         # if keys is empty, all inflections are generated
