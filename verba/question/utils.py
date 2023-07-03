@@ -1,8 +1,5 @@
 import random
 
-# factor a word's weight is multiplied by if it is chosen
-falloff = 0.01
-
 def inflection_generator(words, inflection_keys):
     fails = 0
     successes = 0
