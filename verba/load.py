@@ -1,14 +1,8 @@
 import csv
-import itertools
 from importlib.resources import files
 from verba.word.word_key import WordKey as WK
 from verba.word.make import make_word
-
-def line_product(line):
-    line = {k: v.split() for k, v in line.items()}
-    line = {k: v for k, v in line.items() if v}
-    for p in itertools.product(*line.values()):
-        yield dict(zip(line.keys(), p))
+from verba.utils import line_product
 
 def load_keys(library_name):
     keys = {}

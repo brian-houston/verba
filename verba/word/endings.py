@@ -2,15 +2,9 @@ import csv
 import itertools
 from importlib.resources import files
 from verba.word.word_key import WordKey as WK
+from verba.utils import line_product
 
-def line_product(line):
-    line = {k: v.split() for k, v in line.items()}
-    line = {k: v for k, v in line.items() if v}
-    for p in itertools.product(*line.values()):
-        yield dict(zip(line.keys(), p))
-
-endings = {
-        }
+endings = {}
 
 def load_endings():
     global endings 
