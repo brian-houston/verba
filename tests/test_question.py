@@ -6,6 +6,10 @@ from verba.question.utils import inflection_generator
 import tests.word_utils as word_utils
 from verba.word.word_key import WordKey as WK
 test_keys = {
+        'noun': [WK('nom', 'p'), WK('gen', 's'), WK('dat', 's')]
+        }
+
+test_key = {
         'noun': [WK('nom', 'p')]
         }
 
@@ -42,7 +46,7 @@ class TestQuestion(unittest.TestCase):
 
     def test_inflection_generator(self):
         n = word_utils.make_word('noun', ['', 'puellae', 'f', ''])
-        gen = inflection_generator([n], test_keys)
+        gen = inflection_generator([n], test_key)
         self.assertTrue(next(gen) == (n, WK('nom', 'p')))
 
     def test_inflection_generator_invariable(self):

@@ -8,15 +8,18 @@ def identify_question_generator(words, inflection_keys, pofs, attributes):
 
     for word, key in utils.inflection_generator(words, inflection_keys):
         inflection = word.get_inflection(key)
-        pofs = word.part_of_speech
         answers = set()
 
-        for key in word.get_keys_for_inflection(inflection):
+        all_keys = set(word.get_keys_for_inflection(inflection))
+        if pofs in inflection_keys:
+            all_keys = all_keys.intersection(inflection_keys[pofs]) 
+
+        for key in all_keys:
             answers.add(key.union(word.get_key()).filter(attributes))
 
         checker = make_checker(answers)
         yield Question(f'Identify: "{inflection}"', checker, [str(x) for x in answers], 
-                       meaning=word.meaning, pofs=word.part_of_speech, key='No cheating!')
+                       meaning=word.meaning, pofs=pofs, key='No cheating!')
     
 def make_checker(answers):
     def checker(submissions):
