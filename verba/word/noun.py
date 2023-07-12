@@ -22,11 +22,10 @@ class Noun(Word):
         if self.parts[2] not in definitions.genders:
             self._raise_error('Invalid gender', data)
 
+        self.subgroup = utils.identify_subgroup(self.keywords, definitions.noun_subgroups)
         partial_keys = [
-                WK(self.gender, 'reg', 's', 'gen'),
-                WK(self.gender, 'reg', 'p', 'gen'),
-                WK(self.gender, 'short-e', 's', 'gen'),
-                WK(self.gender, 'i-stem', 'p', 'gen'),
+                WK(self.gender, self.subgroup, 's', 'gen'),
+                WK(self.gender, self.subgroup, 'p', 'gen'),
                 ]
 
         (key, self.stem) = utils.identify_key_and_stem(
@@ -37,11 +36,7 @@ class Noun(Word):
             return
 
         self.declension = key['group']
-        self.subgroup = key['subgroup']
         self.default_number = key['number']
-
-        if self.subgroup == 'reg':
-            self.subgroup = utils.identify_subgroup(self.keywords, definitions.noun_subgroups)
 
         self._init_inflections()
 

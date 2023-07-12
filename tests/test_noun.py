@@ -61,7 +61,7 @@ class TestNoun(unittest.TestCase):
         self.assertTrue(n.get_inflection(WK('abl', 's')) == 'animalī')
 
     def test_short_e(self):
-        n = word_utils.make_word('noun', ['', 'reī', 'f', ''])
+        n = word_utils.make_word('noun', ['', 'reī', 'f', ''], keywords='short-e')
         self.assertTrue(n.get_inflection(WK('gen', 's')) == 'reī')
         self.assertTrue(n.get_inflection(WK('dat', 's')) == 'reī')
 

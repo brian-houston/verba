@@ -49,8 +49,8 @@ class Adjective(Word):
         self.subgroup = utils.identify_subgroup(self.keywords, definitions.adjective_subgroups)
 
         partial_keys = [
-                WK('pos', 'f', 'reg', 's', 'nom'),
-                WK('pos', 'f', 'reg', 'p', 'nom'),
+                WK('pos', 'f', self.subgroup, 's', 'nom'),
+                WK('pos', 'f', self.subgroup, 'p', 'nom'),
                 ]
 
         (key, self.stem) = utils.identify_key_and_stem(
