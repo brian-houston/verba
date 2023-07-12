@@ -3,7 +3,7 @@ import verba.word.definitions as definitions
 """
 Class used to index a word's inflections.
 """
-class WordKey:
+class InflectionKey:
     def __init__(self, *args):
         self.attributes = {}
         for arg in args:
@@ -18,28 +18,28 @@ class WordKey:
     If an attribute is present in both keys, the value for self takes precedence.
 
     Examples:
-        WK('nom').union(WK('s')) = WK('nom', 's')
-        WK('nom', 'p').union(WK('f', 's')) = WK('f', 'nom', 'p')
+        IK('nom').union(IK('s')) = IK('nom', 's')
+        IK('nom', 'p').union(IK('f', 's')) = IK('f', 'nom', 'p')
     """
     def union(self, other):
-        return WordKey(*(other.attributes | self.attributes).values()) 
+        return InflectionKey(*(other.attributes | self.attributes).values()) 
 
     """
-    Create a new WordKey which only has the attributes given attr_names.
+    Create a new InflectionKey which only has the attributes given attr_names.
 
     Examples:
-        WK('f', 'nom', 'p').filter('case') = WK('nom')
+        IK('f', 'nom', 'p').filter('case') = IK('nom')
     """
     def filter(self, attr_names):
-        return WordKey(*[v for k, v in self.attributes.items() if k in attr_names])
+        return InflectionKey(*[v for k, v in self.attributes.items() if k in attr_names])
 
     """
     Return True if other's attributes match self's attributes.
     If self has attributes which other does not, they are ignored.
 
     Examples:
-        WK('f', 'nom', 'p').contains(WK('nom', 'p')) = True
-        WK('f', 'nom', 'p').contains(WK('nom', 's')) = False
+        IK('f', 'nom', 'p').contains(IK('nom', 'p')) = True
+        IK('f', 'nom', 'p').contains(IK('nom', 's')) = False
     """
     def contains(self, other):
         return self.filter(other.attributes.keys()) == other

@@ -1,6 +1,6 @@
 import unittest
 import tests.word_utils as word_utils
-from verba.word.word_key import WordKey as WK
+from verba.word.inflection_key import InflectionKey as IK
 
 class TestVerb(unittest.TestCase):
     def test_conjugation(self):

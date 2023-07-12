@@ -1,6 +1,6 @@
 import csv
 from importlib.resources import files
-from verba.word.word_key import WordKey as WK
+from verba.word.inflection_key import InflectionKey as IK
 from verba.word.make import make_word
 from verba.utils import line_product
 
@@ -13,7 +13,7 @@ def load_keys(library_name):
             pofs = line['part_of_speech']
             keys.setdefault(pofs, set())
             for lp in line_product(line):
-                key = WK(*[v for k,v in lp.items() 
+                key = IK(*[v for k,v in lp.items() 
                            if k != 'chapter' and k != 'part_of_speech']) 
                 keys[pofs].add((chapter, key))
 

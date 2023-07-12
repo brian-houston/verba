@@ -1,35 +1,35 @@
 from verba.word.word import Word 
 import verba.word.definitions as definitions
 import verba.word.utils as utils
-from verba.word.word_key import WordKey as WK
+from verba.word.inflection_key import InflectionKey as IK
 
 present_stem_keys = [
-        WK('ind', 'pres', 'act'),
-        WK('ind', 'pres', 'pass'),
-        WK('ind', 'imperf', 'act'),
-        WK('ind', 'imperf', 'pass'),
-        WK('ind', 'fut', 'act'),
-        WK('ind', 'fut', 'pass'),
-        WK('subj', 'pres', 'act'),
-        WK('subj', 'pres', 'pass'),
-        WK('subj', 'imperf', 'act'),
-        WK('subj', 'imperf', 'pass'),
+        IK('ind', 'pres', 'act'),
+        IK('ind', 'pres', 'pass'),
+        IK('ind', 'imperf', 'act'),
+        IK('ind', 'imperf', 'pass'),
+        IK('ind', 'fut', 'act'),
+        IK('ind', 'fut', 'pass'),
+        IK('subj', 'pres', 'act'),
+        IK('subj', 'pres', 'pass'),
+        IK('subj', 'imperf', 'act'),
+        IK('subj', 'imperf', 'pass'),
         ]
 
 perfect_stem_keys = [
-        WK('ind', 'perf', 'act'),
-        WK('ind', 'plup', 'act'),
-        WK('ind', 'futp', 'act'),
-        WK('subj', 'perf', 'act'),
-        WK('subj', 'plup', 'act'),
+        IK('ind', 'perf', 'act'),
+        IK('ind', 'plup', 'act'),
+        IK('ind', 'futp', 'act'),
+        IK('subj', 'perf', 'act'),
+        IK('subj', 'plup', 'act'),
         ]
 
 supine_stem_keys = [
-        WK('ind', 'perf', 'pass'),
-        WK('ind', 'plup', 'pass'),
-        WK('ind', 'futp', 'pass'),
-        WK('subj', 'perf', 'pass'),
-        WK('subj', 'plup', 'pass'),
+        IK('ind', 'perf', 'pass'),
+        IK('ind', 'plup', 'pass'),
+        IK('ind', 'futp', 'pass'),
+        IK('subj', 'perf', 'pass'),
+        IK('subj', 'plup', 'pass'),
         ]
 
 class Verb(Word):
@@ -76,13 +76,13 @@ class Verb(Word):
         self._init_supine_inflections()
 
         if 'semi-deponent' in self.keywords:
-            self.inflections = {WK('act').union(k): v for k, v in self.inflections.items()}
+            self.inflections = {IK('act').union(k): v for k, v in self.inflections.items()}
 
         self._init_perfect_inflections()
         self._init_present_inflections()
 
         if 'deponent' in self.keywords:
-            self.inflections = {WK('act').union(k): v for k, v in self.inflections.items()}
+            self.inflections = {IK('act').union(k): v for k, v in self.inflections.items()}
 
         self.keywords.add(self.conjugation)
         self.keywords.add(self.subgroup)
@@ -94,8 +94,8 @@ class Verb(Word):
             return
 
         partial_keys = [
-                WK('pres', 'act'),
-                WK('pres', 'pass')
+                IK('pres', 'act'),
+                IK('pres', 'pass')
                 ]
 
         (key, self.present_stem) = utils.identify_key_and_stem(
@@ -147,4 +147,4 @@ class Verb(Word):
         self.inflections |= utils.make_inflections(self.supine_stem, 'verb', keys, self.get_key())
 
     def get_key(self):
-        return WK(self.conjugation, self.subgroup)
+        return IK(self.conjugation, self.subgroup)

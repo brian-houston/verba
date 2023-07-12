@@ -1,7 +1,7 @@
 from verba.word.word import Word 
 import verba.word.definitions as definitions
 import verba.word.utils as utils
-from verba.word.word_key import WordKey as WK
+from verba.word.inflection_key import InflectionKey as IK
 
 """
 An adjective's principle parts should be given as:
@@ -49,8 +49,8 @@ class Adjective(Word):
         self.subgroup = utils.identify_subgroup(self.keywords, definitions.adjective_subgroups)
 
         partial_keys = [
-                WK('pos', 'f', self.subgroup, 's', 'nom'),
-                WK('pos', 'f', self.subgroup, 'p', 'nom'),
+                IK('pos', 'f', self.subgroup, 's', 'nom'),
+                IK('pos', 'f', self.subgroup, 'p', 'nom'),
                 ]
 
         (key, self.stem) = utils.identify_key_and_stem(
@@ -69,9 +69,9 @@ class Adjective(Word):
 
         self._init_inflections()
 
-        self.parts[0] = self.inflections[WK('pos', 'm', 'nom', self.default_number)]
-        self.parts[1] = self.inflections[WK('pos', 'f', 'nom', self.default_number)]
-        self.parts[2] = self.inflections[WK('pos', 'n', 'nom', self.default_number)]
+        self.parts[0] = self.inflections[IK('pos', 'm', 'nom', self.default_number)]
+        self.parts[1] = self.inflections[IK('pos', 'f', 'nom', self.default_number)]
+        self.parts[2] = self.inflections[IK('pos', 'n', 'nom', self.default_number)]
 
         self.keywords.add(self.declension)
         self.keywords.add(self.subgroup)
@@ -84,18 +84,18 @@ class Adjective(Word):
 
         # set irregular nominate singulars
         if self.parts[0]:
-            self.inflections[WK('pos', 'm', 'nom', self.default_number)] = self.parts[0] 
+            self.inflections[IK('pos', 'm', 'nom', self.default_number)] = self.parts[0] 
         if self.parts[2]:
-            self.inflections[WK('pos', 'n', 'nom', self.default_number)] = self.parts[2] 
-            self.inflections[WK('pos', 'n', 'acc', self.default_number)] = self.parts[2] 
+            self.inflections[IK('pos', 'n', 'nom', self.default_number)] = self.parts[2] 
+            self.inflections[IK('pos', 'n', 'acc', self.default_number)] = self.parts[2] 
 
         # for one-termination adjectives
         # set nominatives to first principle part
         if 'one-termination' in self.keywords and self.parts[0]:
-            self.inflections[WK('pos', 'm', 'nom', self.default_number)] = self.parts[0] 
-            self.inflections[WK('pos', 'f', 'nom', self.default_number)] = self.parts[0] 
-            self.inflections[WK('pos', 'n', 'nom', self.default_number)] = self.parts[0] 
-            self.inflections[WK('pos', 'n', 'acc', self.default_number)] = self.parts[0] 
+            self.inflections[IK('pos', 'm', 'nom', self.default_number)] = self.parts[0] 
+            self.inflections[IK('pos', 'f', 'nom', self.default_number)] = self.parts[0] 
+            self.inflections[IK('pos', 'n', 'nom', self.default_number)] = self.parts[0] 
+            self.inflections[IK('pos', 'n', 'acc', self.default_number)] = self.parts[0] 
 
     def get_key(self):
-        return WK(self.declension, self.subgroup)
+        return IK(self.declension, self.subgroup)

@@ -1,4 +1,4 @@
-from verba.word.word_key import WordKey as WK
+from verba.word.inflection_key import InflectionKey as IK
 
 class Word:
     def __init__(self, data):
@@ -19,7 +19,7 @@ class Word:
     def _set_parts_as_inflections(self):
         for i, p in enumerate(self.parts):
             if p:
-                self.inflections[WK(str(i+1))] = p
+                self.inflections[IK(str(i+1))] = p
             else:
                 break
 
@@ -36,17 +36,17 @@ class Word:
         return [k for k, v in self.inflections.items() if v == inflection]
 
     def get_key(self):
-        return WK()
+        return IK()
 
     """
     Apply certain keywords to filter a word's inflections
     Returns the filtered dictionary of inflections
 
-    del-[WK]: delete all inflections whose keys contain WK
-    delnot-[WK]: delete all inflections whose keys do not contain WK
+    del-[IK]: delete all inflections whose keys contain IK
+    delnot-[IK]: delete all inflections whose keys do not contain IK
 
-    add-[WK]: add all inflections whose keys contain WK
-    addnot-[WK]: add all inflections whose keys do not contain WK
+    add-[IK]: add all inflections whose keys contain IK
+    addnot-[IK]: add all inflections whose keys do not contain IK
 
     The 'add' keywords do nothing if nothing has been deleted.
     All inflections can be deleted with 'del-'
@@ -56,17 +56,17 @@ class Word:
         add_inflections = {} 
         for kw in self.keywords:
             if kw.startswith('del-'):
-                key = WK(*kw[4:].split('-'))
+                key = IK(*kw[4:].split('-'))
                 del_inflections = {k:v for k, v in del_inflections.items() if not k.contains(key)}
             if kw.startswith('delnot-'):
-                key = WK(*kw[7:].split('-'))
+                key = IK(*kw[7:].split('-'))
                 del_inflections = {k:v for k, v in del_inflections.items() if k.contains(key)}
 
             if kw.startswith('add-'):
-                key = WK(*kw[4:].split('-'))
+                key = IK(*kw[4:].split('-'))
                 add_inflections |= {k:v for k, v in self.inflections.items() if k.contains(key)}
             if kw.startswith('addnot-'):
-                key = WK(*kw[7:].split('-'))
+                key = IK(*kw[7:].split('-'))
                 add_inflections |= {k:v for k, v in self.inflections.items() if not k.contains(key)}
 
         return del_inflections | add_inflections

@@ -1,6 +1,6 @@
 import itertools
 import verba.word.endings as endings
-from verba.word.word_key import WordKey as WK
+from verba.word.inflection_key import InflectionKey as IK
 
 def identify_subgroup(keywords, subgroups):
     for sg in subgroups:
@@ -14,7 +14,7 @@ def identify_key_and_stem(word, partial_keys, pofs, groups):
     stem = None
     for pk in partial_keys:
         for g in groups:
-            key = pk.union(WK(g))
+            key = pk.union(IK(g))
             if key not in endings.endings[pofs]:
                 continue
 
@@ -41,6 +41,6 @@ def make_inflections(stem, pofs, inflection_keys, self_key):
 
 def make_key_products(*args):
     prods = itertools.product(*args)
-    keys = [WK(*p) for p in prods]
+    keys = [IK(*p) for p in prods]
     return keys
     

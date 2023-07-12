@@ -1,7 +1,7 @@
 from verba.word.word import Word 
 import verba.word.definitions as definitions
 import verba.word.utils as utils
-from verba.word.word_key import WordKey as WK
+from verba.word.inflection_key import InflectionKey as IK
 
 class Noun(Word):
     def __init__(self, data):
@@ -24,8 +24,8 @@ class Noun(Word):
 
         self.subgroup = utils.identify_subgroup(self.keywords, definitions.noun_subgroups)
         partial_keys = [
-                WK(self.gender, self.subgroup, 's', 'gen'),
-                WK(self.gender, self.subgroup, 'p', 'gen'),
+                IK(self.gender, self.subgroup, 's', 'gen'),
+                IK(self.gender, self.subgroup, 'p', 'gen'),
                 ]
 
         (key, self.stem) = utils.identify_key_and_stem(
@@ -40,7 +40,7 @@ class Noun(Word):
 
         self._init_inflections()
 
-        self.parts[0] = self.inflections[WK('nom', self.default_number)]
+        self.parts[0] = self.inflections[IK('nom', self.default_number)]
         
         self.keywords.add(self.declension)
         self.keywords.add(self.subgroup)
@@ -54,11 +54,11 @@ class Noun(Word):
 
         # set nominative (usually singular) for nouns with irregular forms (e.g puer, 3rd declension)
         if self.parts[0]:
-            self.inflections[WK('nom', self.default_number)] = self.parts[0] 
+            self.inflections[IK('nom', self.default_number)] = self.parts[0] 
 
         # nominative and accusative always the same for neuter 
         if self.gender == 'n':
-            self.inflections[WK('acc', self.default_number)] = self.inflections[WK('nom', self.default_number)] 
+            self.inflections[IK('acc', self.default_number)] = self.inflections[IK('nom', self.default_number)] 
 
     def get_key(self):
-        return WK(self.declension, self.gender, self.subgroup)
+        return IK(self.declension, self.gender, self.subgroup)

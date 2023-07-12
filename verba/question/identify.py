@@ -1,5 +1,5 @@
 from verba.question.question import Question
-from verba.word.word_key import WordKey as WK
+from verba.word.inflection_key import InflectionKey as IK
 import verba.question.utils as utils
 
 def identify_question_generator(words, inflection_keys, pofs, attributes):
@@ -25,7 +25,7 @@ def make_checker(answers):
     def checker(submissions):
         nonlocal answers
         for submission in submissions:
-            key = WK(*submission.split())
+            key = IK(*submission.split())
 
             if key not in answers:
                 return 'wrong'

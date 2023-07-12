@@ -4,13 +4,13 @@ from verba.question.macron import macron_question_generator
 from verba.question.vocab import vocab_question_generator 
 from verba.question.utils import inflection_generator
 import tests.word_utils as word_utils
-from verba.word.word_key import WordKey as WK
+from verba.word.inflection_key import InflectionKey as IK
 test_keys = {
-        'noun': set([WK('nom', 'p'), WK('gen', 's'), WK('dat', 's')])
+        'noun': set([IK('nom', 'p'), IK('gen', 's'), IK('dat', 's')])
         }
 
 test_key = {
-        'noun': set([WK('nom', 'p')])
+        'noun': set([IK('nom', 'p')])
         }
 
 class TestQuestion(unittest.TestCase):
@@ -47,10 +47,10 @@ class TestQuestion(unittest.TestCase):
     def test_inflection_generator(self):
         n = word_utils.make_word('noun', ['', 'puellae', 'f', ''])
         gen = inflection_generator([n], test_key)
-        self.assertTrue(next(gen) == (n, WK('nom', 'p')))
+        self.assertTrue(next(gen) == (n, IK('nom', 'p')))
 
     def test_inflection_generator_invariable(self):
         n = word_utils.make_word('noun', ['nihil', '', '', ''], keywords='invariable')
         gen = inflection_generator([n], test_keys)
-        self.assertTrue(next(gen) == (n, WK('1')))
+        self.assertTrue(next(gen) == (n, IK('1')))
 

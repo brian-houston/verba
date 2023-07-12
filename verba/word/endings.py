@@ -1,7 +1,7 @@
 import csv
 import itertools
 from importlib.resources import files
-from verba.word.word_key import WordKey as WK
+from verba.word.inflection_key import InflectionKey as IK
 from verba.utils import line_product
 
 endings = {}
@@ -18,7 +18,7 @@ def load_endings():
 
             endings.setdefault(pofs, {})
             for lp in line_product(line):
-                key = WK(*[v for k,v in lp.items() if k not in ['ending', 'part_of_speech']]) 
+                key = IK(*[v for k,v in lp.items() if k not in ['ending', 'part_of_speech']]) 
                 endings[pofs][key] = line['ending']
 
 load_endings()
