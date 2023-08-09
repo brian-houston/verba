@@ -91,7 +91,7 @@ class Adjective(Word):
 
         # for one-termination adjectives
         # set nominatives to first principle part
-        if 'one-termination' in self.keywords and self.parts[0]:
+        if 'one-termination' in self.keywords:
             self.inflections[IK('pos', 'm', 'nom', self.default_number)] = self.parts[0] 
             self.inflections[IK('pos', 'f', 'nom', self.default_number)] = self.parts[0] 
             self.inflections[IK('pos', 'n', 'nom', self.default_number)] = self.parts[0] 

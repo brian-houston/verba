@@ -3,6 +3,23 @@ import verba.word.definitions as definitions
 import verba.word.utils as utils
 from verba.word.inflection_key import InflectionKey as IK
 
+"""
+An adjective's principle parts should be given as:
+(ind pres act 1st sing), (pres inf), (ind perf act 1st sing OR perf inf), (supine)
+The 1st principal part is only required for i-stems.
+If a verb doesn't pres/perf/supine stem, leave that part blank.
+
+Examples:
+    regular
+    -, amāre, amavī, amatum
+
+    i-stem
+    facio, facere, fecisse, factum
+
+    deponent
+    -, loquī, -, locūtum
+"""
+
 present_stem_keys = [
         IK('ind', 'pres', 'act'),
         IK('ind', 'pres', 'pass'),

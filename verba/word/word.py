@@ -4,7 +4,7 @@ class Word:
     def __init__(self, data):
         self.data = data
         self.part_of_speech = data['part_of_speech']
-        self.is_inflected = False
+        self.is_inflected = False # subclass should set to True if inflected
         self.chapter = data['chapter']
         self.parts = [data['pp1'], data['pp2'], data['pp3'], data['pp4']]
         self.keywords = set(data['keywords'].replace(',', ' ').split())

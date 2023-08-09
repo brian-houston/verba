@@ -3,6 +3,23 @@ import verba.word.definitions as definitions
 import verba.word.utils as utils
 from verba.word.inflection_key import InflectionKey as IK
 
+"""
+A noun's principal parts should be given as:
+(nominative), (genitive), (gender), -
+If the nominative is regular, it can be omitted.
+If the noun is plural, the genitive should be plural.
+
+Examples:
+    regular:
+    -, feminae, f, -
+
+    irregular
+    puer, puerī, m, -
+
+    plural
+    -, liberōrum, m, -
+"""
+
 class Noun(Word):
     def __init__(self, data):
         self.declension = ''
