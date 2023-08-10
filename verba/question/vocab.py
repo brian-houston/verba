@@ -14,7 +14,7 @@ def vocab_question_generator(words, inflection_keys):
 
 def make_checker():
     first_input = True
-    def checker(submissions):
+    def checker(answers, submissions):
         nonlocal first_input
         if first_input:
             first_input = False

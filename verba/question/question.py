@@ -3,6 +3,7 @@ class Question:
         self.question_text = question_text
         self.checker = checker
         self.answers = answers
+        self.mut_answers = set(answers)
         self.meaning = meaning
         self.pofs = pofs
         self.key = key
@@ -11,7 +12,7 @@ class Question:
         return self.question_text
 
     def get_answers_text(self):
-        return '; '.join(self.answers) 
+        return '; '.join([str(x) for x in self.answers]) 
 
     def get_meaning_text(self):
         if self.meaning:
@@ -29,4 +30,4 @@ class Question:
         return 'No key hint'
 
     def check_submissions(self, submissions):
-        return self.checker(submissions)
+        return self.checker(self.mut_answers, submissions)

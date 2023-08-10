@@ -17,13 +17,12 @@ def identify_question_generator(words, inflection_keys, pofs, attributes):
         for key in all_keys:
             answers.add(key.union(word.get_key()).filter(attributes))
 
-        checker = make_checker(answers)
-        yield Question(f'Identify: "{inflection}"', checker, [str(x) for x in answers], 
+        checker = make_checker()
+        yield Question(f'Identify: "{inflection}"', checker, answers, 
                        meaning=word.meaning, pofs=pofs, key='No cheating!')
     
-def make_checker(answers):
-    def checker(submissions):
-        nonlocal answers
+def make_checker():
+    def checker(answers, submissions):
         for submission in submissions:
             key = IK(*submission.split())
 
