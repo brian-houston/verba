@@ -1,9 +1,10 @@
+import verba.user_input as user_input
+
 class Question:
     def __init__(self, question_text, checker, answers, meaning=None, pofs=None, key=None):
         self.question_text = question_text
         self.checker = checker
         self.answers = answers
-        self.mut_answers = set(answers)
         self.meaning = meaning
         self.pofs = pofs
         self.key = key
@@ -29,5 +30,9 @@ class Question:
             return f'Key: "{self.key}"'
         return 'No key hint'
 
-    def check_submissions(self, submissions):
-        return self.checker(self.mut_answers, submissions)
+    def check_submissions(self, submissions, check_macrons=True):
+        answers = self.answers
+        if not check_macrons:
+            answers = {user_input.demacronify(x) if isinstance(x, str) else x
+                       for x in answers}
+        return self.checker(answers, submissions)

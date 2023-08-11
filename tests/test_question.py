@@ -18,12 +18,10 @@ class TestQuestion(unittest.TestCase):
         n = word_utils.make_word('noun', ['', 'litterae', 'f', ''])
         gen = identify_question_generator([n], test_keys, 'noun', ['number', 'case'])
         question = next(gen)
-        self.assertTrue(question.check_submissions(['nom']) == 'wrong')
-        self.assertTrue(question.check_submissions(['p']) == 'wrong')
-        self.assertTrue(question.check_submissions(['afdkl']) == 'wrong')
-        self.assertTrue(question.check_submissions(['nom p']) == 'partial')
-        self.assertTrue(question.check_submissions(['s dat']) == 'partial')
-        self.assertTrue(question.check_submissions(['gen s']) == 'correct')
+        self.assertEqual(question.check_submissions(['nom']), 'wrong')
+        self.assertEqual(question.check_submissions(['afdkl']), 'wrong')
+        self.assertEqual(question.check_submissions(['nom p']), 'wrong')
+        self.assertEqual(question.check_submissions(['gen s', 'nom p', 's dat']), 'correct')
 
         gen = identify_question_generator([n], test_keys, 'noun', ['number', 'case'])
         question = next(gen)
@@ -35,6 +33,13 @@ class TestQuestion(unittest.TestCase):
         question = next(gen)
         self.assertTrue(question.check_submissions(['feminae']) == 'wrong')
         self.assertTrue(question.check_submissions(['fēminae']) == 'correct')
+
+    def test_do_not_check_macrons(self):
+        n = word_utils.make_word('noun', ['', 'fēminae', 'f', ''])
+        gen = macron_question_generator([n], test_keys)
+        question = next(gen)
+        self.assertTrue(question.check_submissions(['feminae'], check_macrons=False) == 'correct')
+        self.assertTrue(question.check_submissions(['fēminae'], check_macrons=False) == 'wrong')
 
     def test_vocab_question_check_answers(self):
         n = word_utils.make_word('noun', ['', 'fēminae', 'f', ''])

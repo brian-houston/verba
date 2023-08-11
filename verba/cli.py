@@ -31,9 +31,6 @@ def answer_question(question):
         if response == 'wrong':
             console.print(f'[bold red]Wrong.[/] Answer: "{question.get_answers_text()}"')
             return
-        if response == 'partial':
-            console.print('[bold yellow]Partially Correct.')
-            continue
         if response == 'answer':
             console.print(f'Answer: "{question.get_answers_text()}"')
 

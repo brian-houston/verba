@@ -23,16 +23,11 @@ def identify_question_generator(words, inflection_keys, pofs, attributes):
     
 def make_checker():
     def checker(answers, submissions):
-        for submission in submissions:
-            key = IK(*submission.split())
+        submissions = {IK(*x.split()) for x in submissions}
 
-            if key not in answers:
-                return 'wrong'
-            answers.remove(key)
-
-        if answers:
-            return 'partial'
-        return 'correct'
+        if answers == submissions:
+            return 'correct'
+        return 'wrong'
             
     return checker
 
