@@ -2,6 +2,7 @@ import unittest
 from verba.question.identify import identify_question_generator 
 from verba.question.macron import macron_question_generator 
 from verba.question.vocab import vocab_question_generator 
+from verba.question.compose import compose_question_generator 
 from verba.question.utils import inflection_generator
 import tests.word_utils as word_utils
 from verba.word.inflection_key import InflectionKey as IK
@@ -48,6 +49,13 @@ class TestQuestion(unittest.TestCase):
         self.assertTrue(question.check_submissions(['whatever']) == 'answer')
         self.assertTrue(question.check_submissions(['whatever']) == 'wrong')
         self.assertTrue(question.check_submissions(['c']) == 'correct')
+
+    def test_compose_question_check_answers(self):
+        n = word_utils.make_word('noun', ['', 'fēminae', 'f', ''])
+        gen = compose_question_generator([n], test_keys)
+        question = next(gen)
+        self.assertEqual(question.check_submissions(['fēminae']), 'correct')
+        self.assertEqual(question.check_submissions(['f']), 'wrong')
 
     def test_inflection_generator(self):
         n = word_utils.make_word('noun', ['', 'puellae', 'f', ''])

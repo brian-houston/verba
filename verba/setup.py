@@ -2,6 +2,7 @@ from verba.console import console
 from verba.question.vocab import vocab_question_generator 
 from verba.question.macron import macron_question_generator 
 from verba.question.identify import identify_question_generator 
+from verba.question.compose import compose_question_generator 
 
 setting_ask_user_text = {
         'level': 'Level: ',
@@ -113,3 +114,5 @@ def create_generator(settings, words, keys):
         return vocab_question_generator(words, keys)
     if settings['type'] == 'identify':
         return identify_question_generator(words, keys, settings.get('pofs', ''), settings.get('attributes', []))
+    if settings['type'] == 'compose':
+        return compose_question_generator(words, keys)
