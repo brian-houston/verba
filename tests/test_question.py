@@ -35,12 +35,12 @@ class TestQuestion(unittest.TestCase):
         self.assertTrue(question.check_submissions(['feminae']) == 'wrong')
         self.assertTrue(question.check_submissions(['fēminae']) == 'correct')
 
-    def test_do_not_check_macrons(self):
+    def test_ignore_macrons(self):
         n = word_utils.make_word('noun', ['', 'fēminae', 'f', ''])
         gen = macron_question_generator([n], test_keys)
         question = next(gen)
-        self.assertTrue(question.check_submissions(['feminae'], check_macrons=False) == 'correct')
-        self.assertTrue(question.check_submissions(['fēminae'], check_macrons=False) == 'wrong')
+        self.assertEqual(question.check_submissions(['feminae'], ignore_macrons=True), 'correct')
+        self.assertEqual(question.check_submissions(['fēminae'], ignore_macrons=True), 'wrong')
 
     def test_vocab_question_check_answers(self):
         n = word_utils.make_word('noun', ['', 'fēminae', 'f', ''])
@@ -66,4 +66,3 @@ class TestQuestion(unittest.TestCase):
         n = word_utils.make_word('noun', ['nihil', '', '', ''], keywords='invariable')
         gen = inflection_generator([n], test_keys)
         self.assertTrue(next(gen) == (n, IK('1')))
-

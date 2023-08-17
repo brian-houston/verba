@@ -4,9 +4,9 @@ from verba.word.inflection_key import InflectionKey as IK
 from verba.word.make import make_word
 from verba.utils import line_product
 
-def load_keys(library_name):
+def load_keys(file_path):
     keys = {}
-    with files('verba.data').joinpath(library_name).joinpath('keys.tsv').open(encoding='utf-16') as file:
+    with file_path.open(encoding='utf-16') as file:
         tsv_file = csv.DictReader(file, delimiter='\t')
         for line in tsv_file:
             chapter = int(line['chapter'])
@@ -19,10 +19,10 @@ def load_keys(library_name):
 
     return keys
 
-def load_words(library_name):
+def load_words(file_path):
     words = []
 
-    with files('verba.data').joinpath(library_name).joinpath('words.tsv').open(encoding='utf-16') as file:
+    with file_path.open(encoding='utf-16') as file:
         tsv_file = csv.DictReader(file, delimiter='\t')
         for line in tsv_file:
             line = {k: v.strip() for k, v in line.items()}

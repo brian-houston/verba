@@ -30,9 +30,9 @@ class Question:
             return f'Key: "{self.key}"'
         return 'No key hint'
 
-    def check_submissions(self, submissions, check_macrons=True):
+    def check_submissions(self, submissions, ignore_macrons=False):
         answers = self.answers
-        if not check_macrons:
+        if ignore_macrons:
             answers = {user_input.demacronify(x) if isinstance(x, str) else x
                        for x in answers}
         return self.checker(answers, submissions)

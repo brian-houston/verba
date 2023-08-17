@@ -22,3 +22,7 @@ verba = "verba.cli:main"
 
 [tool.setuptools.package-data]
 "verba.data" = ["**"]
+
+[tool.setuptools.packages.find]
+include = ["verba*"]
+exclude = ["example_settings*", "tests*"]
