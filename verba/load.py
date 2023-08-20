@@ -26,8 +26,11 @@ def load_words(file_path):
         tsv_file = csv.DictReader(file, delimiter='\t')
         for line in tsv_file:
             line = {k: v.strip() for k, v in line.items()}
-            word = make_word(line)
-            if word:
+            try:
+                word = make_word(line)
+            except ValueError as e:
+                print(e)
+            else:
                 words.append(word)
 
     return words
