@@ -20,6 +20,21 @@ Examples:
     -, liberōrum, m, -
 """
 
+noun_id_endings = {
+    'ae': IK('1', 's', 'reg'),
+    'ī': IK('2', 's', 'reg'),
+    'is': IK('3', 's', 'reg'),
+    'ūs': IK('4', 's', 'reg'),
+    'ēī': IK('5', 's', 'reg'),
+    'eī': IK('5', 's', 'short-e'),
+    'ārum': IK('1', 'p', 'reg'),
+    'ōrum': IK('2', 'p', 'reg'),
+    'um': IK('3', 'p', 'reg'),
+    'ium': IK('3', 'p', 'i-stem'),
+    'uum': IK('4', 'p', 'reg'),
+    'ērum': IK('5', 'p', 'reg'),
+}
+
 class Noun(Word):
     def __init__(self, data):
         self.declension = ''
@@ -39,21 +54,15 @@ class Noun(Word):
         if self.parts[2] not in definitions.genders:
             self._raise_error('Invalid gender', data)
 
-        self.subgroup = utils.identify_subgroup(self.keywords, definitions.noun_subgroups)
-        partial_keys = [
-                IK(self.gender, self.subgroup, 's', 'gen'),
-                IK(self.gender, self.subgroup, 'p', 'gen'),
-                ]
-
-        (key, self.stem) = utils.identify_key_and_stem(
-                self.parts[1], partial_keys, 'noun', definitions.noun_declensions)
+        (key, self.stem) = utils.identify_key_and_stem(self.parts[1], noun_id_endings)
 
         if not key:
-            self._raise_error('Could not identify noun declension', self.data)
+            self._raise_error('Could not identify ending of second principal part', self.data)
             return
 
         self.declension = key['group']
         self.default_number = key['number']
+        self.subgroup = utils.identify_subgroup(key['subgroup'], self.keywords, definitions.noun_subgroups)
 
         self._init_inflections()
 

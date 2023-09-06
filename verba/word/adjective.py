@@ -9,7 +9,7 @@ An adjective's principle parts should be given as:
 For regular adjectives only the feminine nominative is required.
 If the masculine or neuter doesn't follow the regular pattern (e.g pulcher, aliud), it must be provided.
 For one-termination adjectives, the genitive must be provided in the last slot.
-The nominative of one-termination adjectives can just be provided in the first slot and not repeated three times.
+The nominative of one-termination adjectives can just be provided in the second slot and not repeated three times.
 The keyword 'ius' should be given to words like 'nullus' which have 'īus' in the genitive
 
 Examples:
@@ -29,8 +29,15 @@ Examples:
     acer, acris, -, -
 
     3, one-termination
-    pars, -, -, partis
+    -, pars, -, partis
 """
+
+adjective_id_endings = {
+    'a': IK('1/2', 's', 'reg'),
+    'is': IK('3', 's', 'reg'),
+    'ae': IK('1/2', 'p', 'reg'),
+    'ēs': IK('3', 'p', 'reg')
+}
 
 class Adjective(Word):
     def __init__(self, data):
@@ -46,26 +53,19 @@ class Adjective(Word):
         if 'irregular' in self.keywords:
             return
 
-        self.subgroup = utils.identify_subgroup(self.keywords, definitions.adjective_subgroups)
-
-        partial_keys = [
-                IK('pos', 'f', self.subgroup, 's', 'nom'),
-                IK('pos', 'f', self.subgroup, 'p', 'nom'),
-                ]
-
-        (key, self.stem) = utils.identify_key_and_stem(
-                self.parts[1], partial_keys, 'adjective', definitions.adjective_declensions)
-
-        if self.parts[3][-2:] == 'is':
-            self.declension = '3'
-            self.stem = self.parts[3][:-2]
-            self.default_number = 's'
+        (key, self.stem) = utils.identify_key_and_stem(self.parts[1], adjective_id_endings)
+    
+        if not key:
+            (key, self.stem) = utils.identify_key_and_stem(self.parts[3], {'is': IK('3', 's', 'reg')})
+            if not key:
+                self._raise_error('Could not identify adjective declension', self.data)
             self.keywords.add('one-termination')
-        elif not key:
-            self._raise_error('Could not identify adjective declension', self.data)
-        else:
-            self.declension = key['group']
-            self.default_number = key['number']
+            if utils.has_ending(self.parts[1], 'ns'):
+                self.keywords.add('ns')
+
+        self.subgroup = utils.identify_subgroup(key['subgroup'], self.keywords, definitions.adjective_subgroups)
+        self.declension = key['group']
+        self.default_number = key['number']
 
         self._init_inflections()
 
@@ -92,10 +92,10 @@ class Adjective(Word):
         # for one-termination adjectives
         # set nominatives to first principle part
         if 'one-termination' in self.keywords:
-            self.inflections[IK('pos', 'm', 'nom', self.default_number)] = self.parts[0] 
-            self.inflections[IK('pos', 'f', 'nom', self.default_number)] = self.parts[0] 
-            self.inflections[IK('pos', 'n', 'nom', self.default_number)] = self.parts[0] 
-            self.inflections[IK('pos', 'n', 'acc', self.default_number)] = self.parts[0] 
+            self.inflections[IK('pos', 'm', 'nom', self.default_number)] = self.parts[1] 
+            self.inflections[IK('pos', 'f', 'nom', self.default_number)] = self.parts[1] 
+            self.inflections[IK('pos', 'n', 'nom', self.default_number)] = self.parts[1] 
+            self.inflections[IK('pos', 'n', 'acc', self.default_number)] = self.parts[1]
 
     def get_key(self):
         return IK(self.declension, self.subgroup)

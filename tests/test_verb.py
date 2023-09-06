@@ -51,3 +51,19 @@ class TestVerb(unittest.TestCase):
         self.assertTrue(n.present_stem == 'gaud')
         self.assertTrue(n.perfect_stem == '')
         self.assertTrue(n.supine_stem == 'gāvīs')
+    
+    def test_pp0_error(self):
+        with self.assertRaises(ValueError):
+            n = word_utils.make_word('verb', ['asdfsa', '', '', ''])
+
+    def test_pp1_error(self):
+        with self.assertRaises(ValueError):
+            n = word_utils.make_word('verb', ['', 'sadgg', '', ''])
+
+    def test_pp2_error(self):
+        with self.assertRaises(ValueError):
+            n = word_utils.make_word('verb', ['', '', 'sadgg', ''])
+
+    def test_pp3_error(self):
+        with self.assertRaises(ValueError):
+            n = word_utils.make_word('verb', ['', '', '', 'wtwte'])

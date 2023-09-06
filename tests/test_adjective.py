@@ -2,7 +2,7 @@ import unittest
 import tests.word_utils as word_utils
 from verba.word.inflection_key import InflectionKey as IK
 
-class TestNoun(unittest.TestCase):
+class TestAdjective(unittest.TestCase):
     def test_declension(self):
         n = word_utils.make_word('adjective', ['magnus', 'magna', 'magnum', ''])
         self.assertTrue(n.declension == '1/2')
@@ -47,8 +47,12 @@ class TestNoun(unittest.TestCase):
         self.assertTrue(n.get_inflection(IK('pos', 'n', 'dat', 's')) == 'alterī')
 
     def test_one_termination(self):
-        n = word_utils.make_word('adjective', ['atrōx', 'atrōx', 'atrōx', 'atrōcis'])
+        n = word_utils.make_word('adjective', ['', 'atrōx', '', 'atrōcis'])
         self.assertTrue(n.get_inflection(IK('pos', 'f', 'nom', 's')) == 'atrōx')
         self.assertTrue(n.get_inflection(IK('pos', 'm', 'nom', 's')) == 'atrōx')
         self.assertTrue(n.get_inflection(IK('pos', 'n', 'nom', 's')) == 'atrōx')
+
+    def test_ns(self):
+        n = word_utils.make_word('adjective', ['', 'prudens', '', 'prudentis'])
+        self.assertTrue('ns' in n.keywords)
 
