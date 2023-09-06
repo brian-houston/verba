@@ -1,5 +1,4 @@
 from verba.load import load_words, load_keys
-from verba.user_input import read_latin_input
 from verba.console import console
 from verba.setup import select_generator_settings, create_generator
 from verba.parser import parser
@@ -14,7 +13,7 @@ def answer_question(question, settings):
         console.print(question.get_meaning_text())
 
     while True:
-        submission = read_latin_input() 
+        submission = input()
         if submission == '*':
             console.print(question.get_pofs_text())
             console.print(question.get_key_text())
