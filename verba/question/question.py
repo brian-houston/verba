@@ -1,4 +1,4 @@
-import verba.user_input as user_input
+import verba.utils as verba_utils
 
 class Question:
     def __init__(self, question_text, checker, answers, meaning=None, pofs=None, key=None):
@@ -33,6 +33,6 @@ class Question:
     def check_submissions(self, submissions, ignore_macrons=False):
         answers = self.answers
         if ignore_macrons:
-            answers = {user_input.demacronify(x) if isinstance(x, str) else x
+            answers = {verba_utils.demacronify(x) if isinstance(x, str) else x
                        for x in answers}
         return self.checker(answers, submissions)

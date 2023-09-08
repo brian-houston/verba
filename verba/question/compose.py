@@ -1,9 +1,9 @@
 from verba.question.question import Question
-import verba.user_input as user_input
-import verba.question.utils as utils
+import verba.question.utils as question_utils
+import verba.utils as verba_utils
 
 def compose_question_generator(words, inflection_keys):
-    for word, key1, key2 in utils.double_inflection_generator(words, inflection_keys):
+    for word, key1, key2 in question_utils.double_inflection_generator(words, inflection_keys):
         question_inflection = word.get_inflection(key1)
         answer_inflection = word.get_inflection(key2)
 
@@ -18,7 +18,7 @@ def make_checker():
         if len(submissions) != 1:
             return 'wrong'
 
-        if user_input.lower_latin(submissions[0]) in answers:
+        if verba_utils.lower_latin(submissions[0]) in answers:
             return 'correct'
         
         return 'wrong'

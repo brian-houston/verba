@@ -1,12 +1,12 @@
 from verba.question.question import Question
 from verba.word.inflection_key import InflectionKey as IK
-import verba.question.utils as utils
+import verba.question.utils as question_utils
 
 def identify_question_generator(words, inflection_keys, pofs, attributes):
     # remove words with attributes to identify
     words = [w for w in words if w.part_of_speech == pofs]
 
-    for word, key in utils.inflection_generator(words, inflection_keys):
+    for word, key in question_utils.inflection_generator(words, inflection_keys):
         inflection = word.get_inflection(key)
         answers = set()
 
