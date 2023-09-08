@@ -21,8 +21,6 @@ question_types_setting_list = {
         'matching': ['level', 'chapters', 'match', 'filters'], 
         }
 
-required_settings = set(['pofs', 'attributes'])
-
 def translate_setting_input(setting, input):
     if setting == 'level':
         try:
