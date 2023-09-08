@@ -49,14 +49,6 @@ supine_stem_keys = [
         IK('subj', 'plup', 'pass'),
         ]
 
-verb_id_endings_0 = {
-    '': IK('act', 'reg'),
-    'ō': IK('act', 'reg'),
-    'io': IK('act', 'i-stem'),
-    'or': IK('pass', 'reg'),
-    'ior': IK('pass', 'i-stem'),
-}
-
 verb_id_endings_1 = {
     'āre': IK('1', 'act'),
     'ēre': IK('2', 'act'),
@@ -98,13 +90,10 @@ class Verb(Word):
         if 'irregular' in self.keywords:
             return
 
-        (key0, _) = utils.identify_key_and_stem(self.parts[0], verb_id_endings_0)
         (key1, self.present_stem) = utils.identify_key_and_stem(self.parts[1], verb_id_endings_1)
         (key2, self.perfect_stem) = utils.identify_key_and_stem(self.parts[2], verb_id_endings_2)
         (key3, self.supine_stem) = utils.identify_key_and_stem(self.parts[3], verb_id_endings_3)
 
-        if not self.parts[0]:
-            key0 = IK('reg')
         if not self.parts[1]:
             key1 = IK('na')
         if not self.parts[2]:
@@ -112,11 +101,15 @@ class Verb(Word):
         if not self.parts[3]:
             key3 = IK('reg')
 
-        if not key0 or not key1 or not key2 or not key3:
+        if not key1 or not key2 or not key3:
             self._raise_error('Could not identify ending for one or more principal parts', self.data)
 
         self.conjugation = key1['group']
-        self.subgroup = key0['subgroup']
+
+        if self.conjugation == '3' and (utils.has_ending(self.parts[0], 'iō') or utils.has_ending(self.parts[0], 'ior')):
+            self.subgroup = 'i-stem'
+        else:
+            self.subgroup = 'reg'
 
         if key1['voice'] == 'pass':
             self.keywords.add('deponent')

@@ -15,9 +15,11 @@ class TestVerb(unittest.TestCase):
 
     def test_i_stem(self):
         n = word_utils.make_word('verb', ['bibō', 'bibere', '', ''])
-        self.assertTrue(n.subgroup == 'reg')
+        self.assertEqual(n.subgroup, 'reg')
         n = word_utils.make_word('verb', ['faciō', 'facere', '', ''])
-        self.assertTrue(n.subgroup == 'i-stem')
+        self.assertEqual(n.subgroup, 'i-stem')
+        n = word_utils.make_word('verb', ['sciō', 'scīre', '', ''])
+        self.assertEqual(n.subgroup, 'reg')
 
     def test_stems(self):
         n = word_utils.make_word('verb', ['', 'amāre', 'amavī', 'amatus'])
@@ -52,9 +54,8 @@ class TestVerb(unittest.TestCase):
         self.assertTrue(n.perfect_stem == '')
         self.assertTrue(n.supine_stem == 'gāvīs')
     
-    def test_pp0_error(self):
-        with self.assertRaises(ValueError):
-            n = word_utils.make_word('verb', ['asdfsa', '', '', ''])
+    def test_pp0_no_error(self):
+        n = word_utils.make_word('verb', ['asdfsa', '', '', ''])
 
     def test_pp1_error(self):
         with self.assertRaises(ValueError):
